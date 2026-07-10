@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PropertyPurpose {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  HOUSE
+  CONDO_HOUSE
+  APARTMENT
+  LAND
+  STUDIO
+  COMMERCIAL
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          String    @default("ADMIN")
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model City {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  state       String     @default("SP")
+  properties  Property[]
+  districts   District[]
+  communities Community[]
+}
+
+model District {
+  id         String     @id @default(cuid())
+  name       String
+  cityId     String
+  city       City       @relation(fields: [cityId], references: [id])
+  properties Property[]
+
+  @@unique([name, cityId])
+}
+
+model Community {
+  id         String     @id @default(cuid())
+  name       String
+  cityId     String
+  city       City       @relation(fields: [cityId], references: [id])
+  properties Property[]
+
+  @@unique([name, cityId])
+}
+
+model Property {
+  id             String          @id @default(cuid())
+  code           String          @unique
+  title          String
+  slug           String          @unique
+  description    String
+  purpose        PropertyPurpose
+  type           PropertyType
+  priceInCents   Int
+  condoFeeCents  Int?
+  areaM2         Int
+  bedrooms       Int?
+  bathrooms      Int?
+  parkingSpots   Int?
+  isCondo        Boolean         @default(false)
+  isFeatured     Boolean         @default(false)
+  isLaunch       Boolean         @default(false)
+  isPublished    Boolean         @default(true)
+  addressSummary String
+  cityId         String
+  districtId     String?
+  communityId    String?
+  city           City            @relation(fields: [cityId], references: [id])
+  district       District?       @relation(fields: [districtId], references: [id])
+  community      Community?      @relation(fields: [communityId], references: [id])
+  images         PropertyImage[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  url        String
+  alt        String
+  sortOrder  Int      @default(0)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
