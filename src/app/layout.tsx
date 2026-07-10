@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Poppins } from "next/font/google";
+import { FloatingWhatsapp } from "@/components/floating-whatsapp";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Carla Davanso Corretora",
-  description: "Imoveis para comprar, vender e alugar com atendimento consultivo.",
+  description: "Imóveis para comprar, vender e alugar com atendimento consultivo.",
 };
 
 export default function RootLayout({
@@ -26,10 +29,11 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${poppins.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}
+        <FloatingWhatsapp />
         <Toaster />
       </body>
     </html>

@@ -25,7 +25,7 @@ export default async function AdminPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div>
             <Link href="/" className="text-sm text-muted-foreground">
-              Site publico
+              Site público
             </Link>
             <h1 className="text-2xl font-semibold tracking-tight">Painel administrativo</h1>
           </div>
@@ -45,7 +45,7 @@ export default async function AdminPage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
           <Metric title="Total" value={properties.length} />
-          <Metric title="A venda" value={sale} />
+          <Metric title="À venda" value={sale} />
           <Metric title="Aluguel" value={rent} />
           <Metric title="Destaques" value={featured} />
         </div>

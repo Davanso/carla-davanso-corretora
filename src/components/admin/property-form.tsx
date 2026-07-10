@@ -64,20 +64,20 @@ export function AdminPropertyForm() {
 
     if (!response.ok) {
       const payload = await response.json().catch(() => null);
-      toast.error(payload?.message ?? "Nao foi possivel salvar o imovel.");
+      toast.error(payload?.message ?? "Não foi possível salvar o imóvel.");
       return;
     }
 
-    toast.success("Imovel cadastrado com sucesso.");
+    toast.success("Imóvel cadastrado com sucesso.");
     form.reset(defaultValues);
   }
 
   return (
     <Card className="rounded-lg">
       <CardHeader>
-        <CardTitle>Novo imovel</CardTitle>
+        <CardTitle>Novo imóvel</CardTitle>
         <CardDescription>
-          Preencha as informacoes principais e cole as URLs das fotos, uma por linha.
+          Preencha as informações principais e cole as URLs das fotos, uma por linha.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -85,7 +85,7 @@ export function AdminPropertyForm() {
           <FieldGroup>
             <div className="grid gap-5 md:grid-cols-2">
               <Field data-invalid={Boolean(errors.title)}>
-                <FieldLabel htmlFor="title">Titulo</FieldLabel>
+                <FieldLabel htmlFor="title">Título</FieldLabel>
                 <Input id="title" aria-invalid={Boolean(errors.title)} {...register("title")} />
                 <FieldError errors={[errors.title]} />
               </Field>
@@ -97,7 +97,7 @@ export function AdminPropertyForm() {
             </div>
 
             <Field data-invalid={Boolean(errors.description)}>
-              <FieldLabel htmlFor="description">Descricao</FieldLabel>
+              <FieldLabel htmlFor="description">Descrição</FieldLabel>
               <Textarea
                 id="description"
                 rows={4}
@@ -141,7 +141,7 @@ export function AdminPropertyForm() {
                       <SelectContent>
                         <SelectGroup>
                           <SelectItem value="HOUSE">Casa</SelectItem>
-                          <SelectItem value="CONDO_HOUSE">Casa de condominio</SelectItem>
+                      <SelectItem value="CONDO_HOUSE">Casa de condomínio</SelectItem>
                           <SelectItem value="APARTMENT">Apartamento</SelectItem>
                           <SelectItem value="LAND">Terreno</SelectItem>
                           <SelectItem value="STUDIO">Studio</SelectItem>
@@ -153,13 +153,13 @@ export function AdminPropertyForm() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="condoFee">Condominio</FieldLabel>
+                <FieldLabel htmlFor="condoFee">Condomínio</FieldLabel>
                 <Input id="condoFee" type="number" {...register("condoFee")} />
               </Field>
             </div>
 
             <div className="grid gap-5 md:grid-cols-4">
-              <NumberField id="areaM2" label="m2" register={register("areaM2")} error={errors.areaM2} />
+              <NumberField id="areaM2" label="m²" register={register("areaM2")} error={errors.areaM2} />
               <NumberField id="bedrooms" label="Quartos" register={register("bedrooms")} error={errors.bedrooms} />
               <NumberField id="bathrooms" label="Banheiros" register={register("bathrooms")} error={errors.bathrooms} />
               <NumberField id="parkingSpots" label="Vagas" register={register("parkingSpots")} error={errors.parkingSpots} />
@@ -177,7 +177,7 @@ export function AdminPropertyForm() {
                 <FieldError errors={[errors.district]} />
               </Field>
               <Field>
-                <FieldLabel htmlFor="community">Condominio / empreendimento</FieldLabel>
+                <FieldLabel htmlFor="community">Condomínio / empreendimento</FieldLabel>
                 <Input id="community" {...register("community")} />
               </Field>
             </div>
@@ -205,7 +205,7 @@ export function AdminPropertyForm() {
                 control={control}
                 name="isCondo"
                 render={({ field }) => (
-                  <BooleanField label="Condominio fechado" checked={Boolean(field.value)} onChange={field.onChange} />
+                  <BooleanField label="Condomínio fechado" checked={Boolean(field.value)} onChange={field.onChange} />
                 )}
               />
               <Controller
@@ -219,7 +219,7 @@ export function AdminPropertyForm() {
                 control={control}
                 name="isLaunch"
                 render={({ field }) => (
-                  <BooleanField label="Lancamento" checked={Boolean(field.value)} onChange={field.onChange} />
+                  <BooleanField label="Lançamento" checked={Boolean(field.value)} onChange={field.onChange} />
                 )}
               />
               <Controller
@@ -233,7 +233,7 @@ export function AdminPropertyForm() {
 
             <Button type="submit" className="h-10 w-full md:w-fit" disabled={isSubmitting}>
               {isSubmitting ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : <PlusIcon data-icon="inline-start" />}
-              Cadastrar imovel
+              Cadastrar imóvel
             </Button>
           </FieldGroup>
         </form>

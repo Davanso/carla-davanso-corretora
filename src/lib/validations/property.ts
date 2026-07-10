@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const propertyFormSchema = z.object({
-  title: z.string().min(3, "Informe um titulo com pelo menos 3 caracteres."),
-  description: z.string().min(20, "Descreva melhor o imovel."),
+  title: z.string().min(3, "Informe um título com pelo menos 3 caracteres."),
+  description: z.string().min(20, "Descreva melhor o imóvel."),
   purpose: z.enum(["SALE", "RENT"]),
   type: z.enum(["HOUSE", "CONDO_HOUSE", "APARTMENT", "LAND", "STUDIO", "COMMERCIAL"]),
   price: z.coerce.number().positive("Informe um valor valido."),
@@ -19,7 +19,7 @@ export const propertyFormSchema = z.object({
   isLaunch: z.boolean().default(false),
   isPublished: z.boolean().default(true),
   images: z
-    .array(z.string().url("Use URLs validas para as imagens."))
+    .array(z.string().url("Use URLs válidas para as imagens."))
     .min(1, "Inclua pelo menos uma foto."),
 });
 

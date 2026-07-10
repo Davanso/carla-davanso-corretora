@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { KeyRoundIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
@@ -28,7 +28,7 @@ export function LoginForm() {
     setIsPending(false);
 
     if (response?.error) {
-      toast.error("E-mail ou senha invalidos.");
+      toast.error("E-mail ou senha inválidos.");
       return;
     }
 
@@ -37,10 +37,9 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md rounded-lg">
-      <CardHeader>
-        <CardTitle>Acesso administrativo</CardTitle>
-        <CardDescription>Entre para cadastrar e organizar os imoveis.</CardDescription>
+    <Card className="w-full rounded-lg border-border/70 shadow-sm">
+      <CardHeader className="pb-3 text-center">
+        <CardTitle className="text-xl">Entrar</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -59,7 +58,7 @@ export function LoginForm() {
                 required
               />
             </Field>
-            <Button type="submit" className="h-10" disabled={isPending}>
+            <Button type="submit" className="h-11 w-full" disabled={isPending}>
               {isPending ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : null}
               <KeyRoundIcon data-icon="inline-start" />
               Entrar

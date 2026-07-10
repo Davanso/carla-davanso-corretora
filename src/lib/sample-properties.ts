@@ -4,10 +4,10 @@ export const sampleProperties: Property[] = [
   {
     id: "1",
     code: "CD-101",
-    title: "Casa terrea com suite e piscina",
+    title: "Casa térrea com suíte e piscina",
     slug: "casa-terrea-suite-piscina",
     description:
-      "Ambientes integrados, area gourmet e acabamento contemporaneo em bairro tranquilo.",
+      "Ambientes integrados, área gourmet e acabamento contemporâneo em bairro tranquilo.",
     purpose: "SALE",
     type: "HOUSE",
     priceInCents: 79000000,
@@ -26,17 +26,17 @@ export const sampleProperties: Property[] = [
       {
         id: "1a",
         url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
-        alt: "Fachada de casa contemporanea",
+        alt: "Fachada de casa contemporânea",
       },
     ],
   },
   {
     id: "2",
     code: "CD-202",
-    title: "Casa de condominio com projeto autoral",
+    title: "Casa de condomínio com projeto autoral",
     slug: "casa-condominio-projeto-autoral",
     description:
-      "Living amplo, pe direito alto, cozinha planejada e area externa para receber.",
+      "Living amplo, pé-direito alto, cozinha planejada e área externa para receber.",
     purpose: "SALE",
     type: "CONDO_HOUSE",
     priceInCents: 219000000,
@@ -56,7 +56,7 @@ export const sampleProperties: Property[] = [
       {
         id: "2a",
         url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
-        alt: "Sala integrada de casa em condominio",
+        alt: "Sala integrada de casa em condomínio",
       },
     ],
   },
@@ -66,7 +66,7 @@ export const sampleProperties: Property[] = [
     title: "Apartamento novo perto de servicos",
     slug: "apartamento-novo-perto-de-servicos",
     description:
-      "Planta inteligente, varanda gourmet e lazer completo para rotina pratica.",
+      "Planta inteligente, varanda gourmet e lazer completo para rotina prática.",
     purpose: "SALE",
     type: "APARTMENT",
     priceInCents: 53000000,
@@ -93,10 +93,10 @@ export const sampleProperties: Property[] = [
   {
     id: "4",
     code: "CD-404",
-    title: "Casa mobiliada para locacao",
+    title: "Casa mobiliada para locação",
     slug: "casa-mobiliada-para-locacao",
     description:
-      "Residencia completa em condominio fechado, pronta para morar com conforto.",
+      "Residência completa em condomínio fechado, pronta para morar com conforto.",
     purpose: "RENT",
     type: "CONDO_HOUSE",
     priceInCents: 1700000,
@@ -116,17 +116,17 @@ export const sampleProperties: Property[] = [
       {
         id: "4a",
         url: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=80",
-        alt: "Casa de alto padrao em condominio",
+        alt: "Casa de alto padrão em condomínio",
       },
     ],
   },
   {
     id: "5",
     code: "CD-505",
-    title: "Galpao comercial com doca",
+    title: "Galpão comercial com doca",
     slug: "galpao-comercial-com-doca",
     description:
-      "Pe direito alto, area administrativa e acesso facil para operacoes comerciais.",
+      "Pé-direito alto, área administrativa e acesso fácil para operações comerciais.",
     purpose: "RENT",
     type: "COMMERCIAL",
     priceInCents: 2000000,
@@ -145,14 +145,14 @@ export const sampleProperties: Property[] = [
       {
         id: "5a",
         url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1400&q=80",
-        alt: "Galpao comercial amplo",
+        alt: "Galpão comercial amplo",
       },
     ],
   },
   {
     id: "6",
     code: "CD-606",
-    title: "Lancamento com lazer completo",
+    title: "Lançamento com lazer completo",
     slug: "lancamento-com-lazer-completo",
     description:
       "Novo empreendimento com plantas compactas, lazer moderno e excelente potencial.",
@@ -175,7 +175,7 @@ export const sampleProperties: Property[] = [
       {
         id: "6a",
         url: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1400&q=80",
-        alt: "Predio residencial moderno",
+        alt: "Prédio residencial moderno",
       },
     ],
   },

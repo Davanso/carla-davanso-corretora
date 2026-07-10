@@ -8,12 +8,12 @@ export async function POST(request: Request) {
   const session = await auth();
 
   if (!session?.user) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   if (!process.env.DATABASE_URL) {
     return NextResponse.json(
-      { message: "Configure DATABASE_URL para salvar imoveis no PostgreSQL." },
+      { message: "Configure DATABASE_URL para salvar imóveis no PostgreSQL." },
       { status: 503 }
     );
   }
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { message: "Revise os campos do formulario.", errors: parsed.error.flatten() },
+      { message: "Revise os campos do formulário.", errors: parsed.error.flatten() },
       { status: 400 }
     );
   }

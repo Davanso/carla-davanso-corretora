@@ -53,21 +53,31 @@ export function PropertySearch({ properties }: PropertySearchProps) {
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Encontre seu novo imovel
+            Encontre seu novo imóvel
           </p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-            Filtre por objetivo, localizacao e condominio.
+            Filtre por objetivo, localização e condomínio.
           </h2>
         </div>
 
         <div className="rounded-lg border bg-background p-4 shadow-sm">
           <FieldGroup className="grid gap-4 md:grid-cols-5">
-            <FilterSelect label="Transacao" value={purpose} onChange={setPurpose}>
+            <FilterSelect
+              label="Transação"
+              selectedLabel={purposeLabel(purpose)}
+              value={purpose}
+              onChange={setPurpose}
+            >
               <SelectItem value={anyValue}>Comprar ou alugar</SelectItem>
               <SelectItem value="SALE">Comprar</SelectItem>
               <SelectItem value="RENT">Alugar</SelectItem>
             </FilterSelect>
-            <FilterSelect label="Cidade" value={city} onChange={setCity}>
+            <FilterSelect
+              label="Cidade"
+              selectedLabel={city === anyValue ? "Todas" : city}
+              value={city}
+              onChange={setCity}
+            >
               <SelectItem value={anyValue}>Todas</SelectItem>
               {cities.map((item) => (
                 <SelectItem key={item} value={item}>
@@ -75,7 +85,12 @@ export function PropertySearch({ properties }: PropertySearchProps) {
                 </SelectItem>
               ))}
             </FilterSelect>
-            <FilterSelect label="Bairro" value={district} onChange={setDistrict}>
+            <FilterSelect
+              label="Bairro"
+              selectedLabel={district === anyValue ? "Todos" : district}
+              value={district}
+              onChange={setDistrict}
+            >
               <SelectItem value={anyValue}>Todos</SelectItem>
               {districts.map((item) => (
                 <SelectItem key={item} value={item}>
@@ -83,7 +98,12 @@ export function PropertySearch({ properties }: PropertySearchProps) {
                 </SelectItem>
               ))}
             </FilterSelect>
-            <FilterSelect label="Condominio" value={community} onChange={setCommunity}>
+            <FilterSelect
+              label="Condomínio"
+              selectedLabel={community === anyValue ? "Todos" : community}
+              value={community}
+              onChange={setCommunity}
+            >
               <SelectItem value={anyValue}>Todos</SelectItem>
               {communities.map((item) => (
                 <SelectItem key={item} value={item}>
@@ -91,14 +111,19 @@ export function PropertySearch({ properties }: PropertySearchProps) {
                 </SelectItem>
               ))}
             </FilterSelect>
-            <FilterSelect label="Fechado?" value={isCondo} onChange={setIsCondo}>
+            <FilterSelect
+              label="Condomínio fechado?"
+              selectedLabel={condoLabel(isCondo)}
+              value={isCondo}
+              onChange={setIsCondo}
+            >
               <SelectItem value={anyValue}>Tanto faz</SelectItem>
               <SelectItem value="true">Sim</SelectItem>
-              <SelectItem value="false">Nao</SelectItem>
+              <SelectItem value="false">Não</SelectItem>
             </FilterSelect>
           </FieldGroup>
           <div className="mt-4 flex items-center justify-between gap-3 text-sm text-muted-foreground">
-            <span>{filtered.length} imoveis encontrados</span>
+            <span>{filtered.length} imóveis encontrados</span>
             <Button
               type="button"
               variant="outline"
@@ -128,11 +153,13 @@ export function PropertySearch({ properties }: PropertySearchProps) {
 
 function FilterSelect({
   label,
+  selectedLabel,
   value,
   onChange,
   children,
 }: {
   label: string;
+  selectedLabel: string;
   value: string;
   onChange: (value: string) => void;
   children: React.ReactNode;
@@ -142,7 +169,7 @@ function FilterSelect({
       <FieldLabel>{label}</FieldLabel>
       <Select value={value} onValueChange={(nextValue) => onChange(nextValue ?? anyValue)}>
         <SelectTrigger className="h-11 w-full">
-          <SelectValue />
+          <SelectValue>{selectedLabel}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>{children}</SelectGroup>
@@ -154,4 +181,28 @@ function FilterSelect({
 
 function unique(values: string[]) {
   return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
+}
+
+function purposeLabel(value: string) {
+  if (value === "SALE") {
+    return "Comprar";
+  }
+
+  if (value === "RENT") {
+    return "Alugar";
+  }
+
+  return "Comprar ou alugar";
+}
+
+function condoLabel(value: string) {
+  if (value === "true") {
+    return "Sim";
+  }
+
+  if (value === "false") {
+    return "Não";
+  }
+
+  return "Tanto faz";
 }

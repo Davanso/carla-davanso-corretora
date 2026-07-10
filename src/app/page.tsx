@@ -22,27 +22,31 @@ export default async function Home() {
       <PropertySearch properties={properties} />
       <PropertyCarousel
         anchorId="venda"
-        title="Imoveis a venda"
-        description="Casas, apartamentos e oportunidades selecionadas para comprar com seguranca."
+        title="Imóveis à venda"
+        description="Casas, apartamentos e oportunidades selecionadas para comprar com segurança."
         properties={sale}
+        href="/imoveis/a-venda"
       />
       <PropertyCarousel
         anchorId="aluguel"
-        title="Imoveis para alugar"
-        description="Opcoes prontas para morar ou operar, com informacoes objetivas para decidir rapido."
+        title="Imóveis para alugar"
+        description="Opções prontas para morar ou operar, com informações objetivas para decidir rápido."
         properties={rent}
+        href="/imoveis/para-alugar"
       />
       <PropertyCarousel
         anchorId="destaques"
-        title="Imoveis em Destaque"
-        description="Imoveis que merecem atencao especial por localizacao, acabamento ou potencial."
+        title="Imóveis em Destaque"
+        description="Imóveis que merecem atenção especial por localização, acabamento ou potencial."
         properties={featured}
+        href="/imoveis/destaques"
       />
       <PropertyCarousel
         anchorId="lancamentos"
-        title="Lancamentos"
-        description="Novos empreendimentos e unidades com excelente potencial de valorizacao."
+        title="Lançamentos"
+        description="Novos empreendimentos e unidades com excelente potencial de valorização."
         properties={launches}
+        href="/imoveis/lancamentos"
       />
       <Services />
       <SiteFooter />
@@ -55,7 +59,7 @@ function Hero() {
     <section className="relative min-h-[680px] overflow-hidden bg-primary text-primary-foreground">
       <Image
         src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=82"
-        alt="Sala ampla de imovel de alto padrao"
+        alt="Sala ampla de imóvel de alto padrão"
         fill
         priority
         className="object-cover opacity-55"
@@ -65,25 +69,26 @@ function Hero() {
       <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col justify-center px-4 pb-20 pt-24 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
           <Badge className="rounded-md bg-white/15 text-white backdrop-blur">
-            Curadoria imobiliaria em Indaiatuba e regiao
+            Curadoria imobiliária em Indaiatuba e região
           </Badge>
           <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
             Carla Davanso Corretora
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82">
-            Encontre o imovel certo para comprar ou alugar com atendimento
-            proximo, filtros objetivos e uma vitrine facil de atualizar.
+            Encontre o imóvel certo para comprar ou alugar com atendimento
+            próximo, filtros objetivos e uma vitrine fácil de atualizar.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" variant="secondary" render={<a href="#busca" />}>
-              Buscar imoveis
+            <Button size="lg" variant="secondary" nativeButton={false} render={<a href="#busca" />}>
+              Buscar imóveis
               <ArrowRightIcon data-icon="inline-end" />
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="border-white/35 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-              render={<a href="https://wa.me/5519999999999" />}
+              nativeButton={false}
+              render={<a href="https://wa.me/5519998383234" />}
             >
               <MessageCircleIcon data-icon="inline-start" />
               Falar no WhatsApp
@@ -97,9 +102,9 @@ function Hero() {
 
 function Services() {
   const items = [
-    "Venda com apresentacao profissional do imovel",
-    "Locacao com triagem e organizacao das informacoes",
-    "Atendimento para compradores, proprietarios e investidores",
+    "Venda com apresentação profissional do imóvel",
+    "Locação com triagem e organização das informações",
+    "Atendimento para compradores, proprietários e investidores",
   ];
 
   return (

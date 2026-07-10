@@ -16,7 +16,7 @@ export async function createUploadUrl(key: string, contentType: string) {
   const bucket = process.env.S3_BUCKET;
 
   if (!bucket) {
-    throw new Error("S3_BUCKET nao configurado.");
+    throw new Error("S3_BUCKET não configurado.");
   }
 
   const command = new PutObjectCommand({

@@ -12,7 +12,7 @@ type PropertyCardProps = {
 
 export function PropertyCard({ property }: PropertyCardProps) {
   const image = property.images[0];
-  const priceSuffix = property.purpose === "RENT" ? "/mes" : undefined;
+  const priceSuffix = property.purpose === "RENT" ? "/mês" : undefined;
 
   return (
     <Card className="overflow-hidden rounded-lg border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
@@ -32,7 +32,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             <Badge className="rounded-md bg-primary text-primary-foreground">
               {purposeLabel(property.purpose)}
             </Badge>
-            {property.isLaunch ? <Badge variant="secondary">Lancamento</Badge> : null}
+            {property.isLaunch ? <Badge variant="secondary">Lançamento</Badge> : null}
           </div>
           <div className="absolute inset-x-4 bottom-4 text-white">
             <p className="text-sm font-medium opacity-90">
@@ -54,9 +54,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
         </div>
         <div className="grid grid-cols-4 gap-2 text-sm">
           <Spec icon={BedDoubleIcon} value={property.bedrooms ?? 0} label="Quartos" />
-          <Spec icon={BathIcon} value={property.bathrooms ?? 0} label="Banhos" />
+          <Spec icon={BathIcon} value={property.bathrooms ?? 0} label="Banheiros" />
           <Spec icon={CarIcon} value={property.parkingSpots ?? 0} label="Vagas" />
-          <Spec icon={RulerIcon} value={property.areaM2} label="m2" />
+          <Spec icon={RulerIcon} value={property.areaM2} label="m²" />
         </div>
       </CardContent>
     </Card>

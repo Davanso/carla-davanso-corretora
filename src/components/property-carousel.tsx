@@ -14,6 +14,7 @@ type PropertyCarouselProps = {
   description?: string;
   properties: Property[];
   anchorId: string;
+  href?: string;
 };
 
 export function PropertyCarousel({
@@ -21,6 +22,7 @@ export function PropertyCarousel({
   description,
   properties,
   anchorId,
+  href = "/imoveis/a-venda",
 }: PropertyCarouselProps) {
   if (!properties.length) {
     return null;
@@ -41,7 +43,7 @@ export function PropertyCarousel({
               <p className="mt-3 text-muted-foreground">{description}</p>
             ) : null}
           </div>
-          <Button variant="outline" render={<a href="#busca" />}>
+          <Button variant="outline" nativeButton={false} render={<a href={href} />}>
             Ver todos
           </Button>
         </div>
