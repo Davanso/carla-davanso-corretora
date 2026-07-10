@@ -26,6 +26,8 @@ const categories = {
 
 type CategoryKey = keyof typeof categories;
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return Object.keys(categories).map((categoria) => ({ categoria }));
 }

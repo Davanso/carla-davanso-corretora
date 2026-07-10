@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Carla Davanso Corretora
 
-## Getting Started
+Site imobiliário em Next.js para vitrine pública de imóveis, páginas de listagem por categoria, página de contato e painel administrativo.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui com Base UI
+- Embla Carousel
+- React Hook Form + Zod
+- Auth.js
+- Prisma ORM
+- PostgreSQL
+- Storage S3/R2 para fotos dos imóveis
+- Deploy previsto em Coolify
+
+## Rotas principais
+
+- `/` - home pública com busca, carrosséis e destaques.
+- `/imoveis/a-venda` - listagem de imóveis à venda.
+- `/imoveis/para-alugar` - listagem de imóveis para alugar.
+- `/imoveis/destaques` - imóveis em destaque.
+- `/imoveis/lancamentos` - lançamentos.
+- `/contato` - formulário, contatos e mapa.
+- `/admin/login` - login administrativo.
+- `/admin` - painel administrativo.
+
+## Desenvolvimento local
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Crie o banco PostgreSQL local e configure o `.env`. O projeto já tem um `.env` local neste workspace; para outro ambiente, copie:
+
+```bash
+cp .env.example .env
+```
+
+Gere o Prisma Client e sincronize o schema:
+
+```bash
+npm run db:push
+```
+
+Rode o projeto:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Variáveis de ambiente
 
-## Learn More
+As variáveis ficam em `.env` localmente e devem ser cadastradas no Coolify em produção.
 
-To learn more about Next.js, take a look at the following resources:
+```env
+DATABASE_URL="postgresql://..."
+AUTH_SECRET="..."
+AUTH_URL="https://seudominio.com.br"
+ADMIN_EMAIL="admin@carladavanso.com.br"
+ADMIN_PASSWORD="senha-forte"
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="..."
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+S3_ENDPOINT="https://<account-id>.r2.cloudflarestorage.com"
+S3_REGION="auto"
+S3_BUCKET="carla-davanso-imoveis"
+S3_ACCESS_KEY_ID="..."
+S3_SECRET_ACCESS_KEY="..."
+S3_PUBLIC_BASE_URL="https://cdn.seudominio.com"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Observações:
 
-## Deploy on Vercel
+- `.env` não deve ser commitado.
+- `AUTH_SECRET` precisa ser longo e aleatório.
+- Em produção, troque `ADMIN_PASSWORD`.
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` precisa ter permissão para Google Maps Embed API.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Comandos úteis
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev       # servidor local
+npm run lint      # lint
+npm run build     # build de produção
+npm run start     # roda build de produção
+npm run db:push   # sincroniza schema no banco
+npm run db:migrate # aplica migrations em produção
+npm run db:studio # abre Prisma Studio
+```
+
+## Deploy
+
+O guia de deploy está em [docs/deploy-coolify.md](docs/deploy-coolify.md).
+
+Resumo para Coolify:
+
+- Build command: `npm run build`
+- Start command: `npm run start`
+- Porta: `3000`
+- Banco: PostgreSQL
+- Antes do primeiro deploy com banco vazio, rode `npm run db:push` ou use migrations.
+
+## Próximos passos
+
+- Finalizar cadastro real de imóveis com upload para R2/S3.
+- Criar fluxo de seed/primeiro usuário admin.
+- Trocar placeholders por imóveis reais.
+- Revisar domínio final e `AUTH_URL`.

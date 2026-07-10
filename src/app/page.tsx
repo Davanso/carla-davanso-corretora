@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getProperties } from "@/lib/properties";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const properties = await getProperties();
   const sale = properties.filter((property) => property.purpose === "SALE");

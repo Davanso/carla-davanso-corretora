@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const address = "Rua José Amstalden Filho, 365, Indaiatuba/SP";
 const mapQuery = encodeURIComponent("Rua José Amstalden Filho, 365, Indaiatuba, SP");
-const googleMapsApiKey = "AIzaSyB_mGR9_vJpVgwGOW3EgZE6hs4aD7YkTKg";
+const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 const contacts = [
   {
@@ -97,13 +97,19 @@ export default function ContactPage() {
           </div>
 
           <div className="overflow-hidden rounded-lg border bg-secondary/40">
-            <iframe
-              title={`Mapa para ${address}`}
-              src={`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&q=${mapQuery}&zoom=18`}
-              className="min-h-96 w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            {googleMapsApiKey ? (
+              <iframe
+                title={`Mapa para ${address}`}
+                src={`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&q=${mapQuery}&zoom=18`}
+                className="min-h-96 w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            ) : (
+              <div className="flex min-h-96 items-center justify-center p-8 text-center text-sm text-muted-foreground">
+                Configure NEXT_PUBLIC_GOOGLE_MAPS_API_KEY para exibir o mapa.
+              </div>
+            )}
           </div>
         </div>
       </section>
