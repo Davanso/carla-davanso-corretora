@@ -14,6 +14,7 @@ export function FloatingWhatsapp() {
         alt="WhatsApp"
         width={80}
         height={80}
+        loading="eager"
         className="size-18 rounded-full drop-shadow-2xl sm:size-20"
       />
     </a>

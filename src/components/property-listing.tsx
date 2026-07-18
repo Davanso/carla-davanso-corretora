@@ -6,6 +6,13 @@ import { PropertyCard } from "@/components/property-card";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import type { Property } from "@/types/property";
 
 type PropertyListingProps = {
@@ -195,11 +202,24 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
             </label>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          {filtered.length ? (
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {filtered.map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          ) : (
+            <Empty className="min-h-72 border bg-background">
+              <EmptyHeader>
+                <EmptyMedia variant="icon"><SlidersHorizontalIcon /></EmptyMedia>
+                <EmptyTitle>Nenhum imóvel encontrado</EmptyTitle>
+                <EmptyDescription>
+                  Ajuste ou limpe os filtros para ver outras opções disponíveis.
+                </EmptyDescription>
+              </EmptyHeader>
+              <Button type="button" variant="outline" onClick={clearFilters}>Limpar filtros</Button>
+            </Empty>
+          )}
         </div>
       </div>
     </section>

@@ -18,22 +18,26 @@ export function LoginForm() {
     event.preventDefault();
     setIsPending(true);
 
-    const formData = new FormData(event.currentTarget);
-    const response = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+    try {
+      const formData = new FormData(event.currentTarget);
+      const response = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+      });
 
-    setIsPending(false);
+      if (response?.error) {
+        toast.error("E-mail ou senha inválidos.");
+        return;
+      }
 
-    if (response?.error) {
-      toast.error("E-mail ou senha inválidos.");
-      return;
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      toast.error("Não foi possível entrar agora. Verifique a conexão e tente novamente.");
+    } finally {
+      setIsPending(false);
     }
-
-    router.push("/admin");
-    router.refresh();
   }
 
   return (
