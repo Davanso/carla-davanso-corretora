@@ -16,7 +16,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
   return (
     <Card className="overflow-hidden rounded-lg border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <Link href={`/imoveis/${property.slug}`} aria-label={`Ver ${property.title}`}>
+      <Link href={`/imovel/${property.slug}`} aria-label={`Ver ${property.title}`}>
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
           {image ? (
             <Image
@@ -26,7 +26,11 @@ export function PropertyCard({ property }: PropertyCardProps) {
               className="object-cover transition duration-500 hover:scale-105"
               sizes="(max-width: 768px) 90vw, 33vw"
             />
-          ) : null}
+          ) : (
+            <div className="flex size-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+              Foto não disponível
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute left-4 top-4 flex flex-wrap gap-2">
             <Badge className="rounded-md bg-primary text-primary-foreground">

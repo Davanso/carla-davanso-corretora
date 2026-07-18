@@ -13,6 +13,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import type { Property } from "@/types/property";
 
 type PropertySearchProps = {
@@ -141,11 +148,23 @@ export function PropertySearch({ properties }: PropertySearchProps) {
           </div>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.slice(0, 6).map((property) => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
-        </div>
+        {filtered.length ? (
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.slice(0, 6).map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+        ) : (
+          <Empty className="min-h-64 border bg-background">
+            <EmptyHeader>
+              <EmptyMedia variant="icon"><SearchIcon /></EmptyMedia>
+              <EmptyTitle>Nenhum imóvel disponível</EmptyTitle>
+              <EmptyDescription>
+                Não há imóveis que correspondam aos filtros selecionados.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
       </div>
     </section>
   );

@@ -12,6 +12,7 @@ export type PropertyImage = {
   id: string;
   url: string;
   alt: string;
+  sortOrder?: number;
 };
 
 export type Property = {

@@ -44,13 +44,26 @@ function mapProperty(property: PropertyWithRelations): Property {
       id: image.id,
       url: image.url,
       alt: image.alt,
+      sortOrder: image.sortOrder,
     })),
   };
 }
 
-export async function getProperties() {
+function canUseDevelopmentSamples() {
+  return process.env.NODE_ENV === "development" && !process.env.DATABASE_URL;
+}
+
+export class CatalogueUnavailableError extends Error {
+  constructor(cause?: unknown) {
+    super("O catálogo está temporariamente indisponível.", { cause });
+    this.name = "CatalogueUnavailableError";
+  }
+}
+
+export async function getProperties(): Promise<Property[]> {
   if (!process.env.DATABASE_URL) {
-    return sampleProperties;
+    if (canUseDevelopmentSamples()) return sampleProperties;
+    throw new CatalogueUnavailableError(new Error("DATABASE_URL não configurada."));
   }
 
   try {
@@ -61,7 +74,27 @@ export async function getProperties() {
     });
 
     return properties.map(mapProperty);
-  } catch {
-    return sampleProperties;
+  } catch (error) {
+    throw new CatalogueUnavailableError(error);
+  }
+}
+
+export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  if (!process.env.DATABASE_URL) {
+    if (canUseDevelopmentSamples()) {
+      return sampleProperties.find((property) => property.slug === slug) ?? null;
+    }
+    throw new CatalogueUnavailableError(new Error("DATABASE_URL não configurada."));
+  }
+
+  try {
+    const property = await prisma.property.findFirst({
+      where: { slug, isPublished: true },
+      include: propertyInclude,
+    });
+
+    return property ? mapProperty(property) : null;
+  } catch (error) {
+    throw new CatalogueUnavailableError(error);
   }
 }
