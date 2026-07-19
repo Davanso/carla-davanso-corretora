@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import type { Property } from "@/types/property";
 
 type PropertyCarouselProps = {
@@ -36,10 +36,7 @@ export function PropertyCarousel({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Carla Davanso
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
               {title}
             </h2>
             {description ? (
@@ -48,14 +45,9 @@ export function PropertyCarousel({
           </div>
           <div className="flex flex-wrap gap-2">
             {actions.map((action) => (
-              <Button
-                key={action.href}
-                variant="outline"
-                nativeButton={false}
-                render={<a href={action.href} />}
-              >
+              <a key={action.href} className={buttonVariants({ variant: "outline" })} href={action.href}>
                 {action.label}
-              </Button>
+              </a>
             ))}
           </div>
         </div>

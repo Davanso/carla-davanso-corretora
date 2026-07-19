@@ -38,10 +38,7 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <div className="flex flex-col justify-between gap-10">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Contato
-              </p>
-              <h1 className="mt-3 max-w-xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1 className="max-w-xl text-4xl font-semibold tracking-tight sm:text-5xl">
                 Vamos conversar sobre o seu próximo imóvel.
               </h1>
               <p className="mt-5 max-w-xl text-muted-foreground">
@@ -78,10 +75,7 @@ export default function ContactPage() {
       <section className="bg-background py-14 sm:py-20">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Onde estamos
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight">
+            <h2 className="text-3xl font-semibold tracking-tight">
               Atendimento em Indaiatuba e região.
             </h2>
             <div className="mt-8 flex flex-col gap-5 text-muted-foreground">

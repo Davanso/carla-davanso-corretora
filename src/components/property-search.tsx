@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -82,13 +82,10 @@ export function PropertySearch({ properties }: PropertySearchProps) {
   }
 
   return (
-    <section id="busca" className="scroll-mt-24 bg-secondary/45 py-14 sm:py-16">
+    <section id="busca" className="scroll-mt-24 bg-secondary/65 py-20 sm:py-24">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Encontre seu novo imóvel
-          </p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold leading-snug tracking-tight sm:text-4xl">
             Comece pelo que mais importa para você.
           </h2>
           <p className="mt-3 text-muted-foreground">
@@ -98,7 +95,7 @@ export function PropertySearch({ properties }: PropertySearchProps) {
 
         <form
           aria-label="Busca de imóveis"
-          className="rounded-xl border bg-background p-4 shadow-sm sm:p-6"
+          className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7"
           onSubmit={handleSubmit}
         >
           <FieldGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -167,10 +164,10 @@ export function PropertySearch({ properties }: PropertySearchProps) {
           </FieldGroup>
 
           <div className="mt-5 flex justify-end">
-            <Button className="w-full sm:w-auto" size="lg" type="submit">
+            <button className={buttonVariants({ size: "lg", className: "w-full sm:w-auto" })} type="submit">
               <SearchIcon data-icon="inline-start" />
               Ver imóveis
-            </Button>
+            </button>
           </div>
         </form>
       </div>

@@ -12,13 +12,13 @@ const geistMono = Geist_Mono({
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Carla Davanso Corretora",
-  description: "Imóveis para comprar, vender e alugar com atendimento consultivo.",
+  description: "Imóveis para comprar, vender e alugar em Indaiatuba e região, com atendimento consultivo.",
 };
 
 export default function RootLayout({

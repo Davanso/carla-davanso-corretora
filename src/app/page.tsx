@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRightIcon,
-  CheckCircle2Icon,
+  ArrowUpRightIcon,
   HomeIcon,
   KeyRoundIcon,
   MessageCircleIcon,
@@ -12,16 +12,7 @@ import { PropertyCarousel } from "@/components/property-carousel";
 import { PropertySearch } from "@/components/property-search";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getProperties } from "@/lib/properties";
 
@@ -58,45 +49,49 @@ function Hero() {
   const whatsappHref = "https://wa.me/5519998383234";
 
   return (
-    <section className="relative min-h-[680px] overflow-hidden bg-primary text-primary-foreground">
+    <section className="relative isolate min-h-[720px] overflow-hidden bg-primary text-primary-foreground sm:min-h-[760px]">
       <Image
         src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=82"
         alt="Sala ampla de imóvel de alto padrão"
         fill
         priority
-        className="object-cover opacity-55"
+        className="object-cover object-center grayscale brightness-75 contrast-110"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/20" />
-      <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col justify-center px-4 pb-20 pt-24 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <Badge className="rounded-md bg-white/15 text-white backdrop-blur">
-            Curadoria imobiliária em Indaiatuba e região
-          </Badge>
-          <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
-            Carla Davanso Corretora
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82">
-            Encontre o imóvel certo para comprar ou alugar com atendimento
-            próximo, filtros objetivos e informações claras para orientar sua busca.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a className={buttonVariants({ size: "lg", variant: "secondary" })} href="#busca">
-              Buscar imóveis
-              <ArrowRightIcon data-icon="inline-end" />
-            </a>
-            <a
-              className={cn(
-                buttonVariants({ size: "lg", variant: "outline" }),
-                "border-white/35 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-              )}
-              href={whatsappHref}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <MessageCircleIcon data-icon="inline-start" />
-              Falar no WhatsApp
-            </a>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/20" />
+      <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/70 to-transparent" />
+      <div className="relative mx-auto flex min-h-[720px] max-w-7xl flex-col justify-end px-4 pb-16 pt-28 sm:min-h-[760px] sm:px-6 sm:pb-20 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-end">
+          <div className="max-w-4xl">
+            <h1 className="max-w-3xl text-5xl font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
+              Carla Davanso <span className="whitespace-nowrap">Corretora.</span>
+            </h1>
+            <p className="mt-7 max-w-xl text-base leading-7 text-primary-foreground/80 sm:text-lg sm:leading-8">
+              Uma seleção cuidadosa de casas, apartamentos e oportunidades para
+              comprar, alugar ou anunciar o seu imóvel.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a className={buttonVariants({ size: "lg", variant: "secondary" })} href="#busca">
+                Encontrar um imóvel
+                <ArrowRightIcon data-icon="inline-end" />
+              </a>
+              <a
+                className={cn(
+                  buttonVariants({ size: "lg", variant: "outline" }),
+                  "border-white/35 bg-transparent text-white hover:bg-white/15 hover:text-white"
+                )}
+                href={whatsappHref}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <MessageCircleIcon data-icon="inline-start" />
+                Conversar com a Carla
+              </a>
+            </div>
+          </div>
+          <div className="max-w-xs border-l border-white/35 pl-5 text-sm leading-6 text-primary-foreground/75 lg:mb-2">
+            <p className="font-medium text-white">Atendimento próximo, do primeiro filtro à chave na mão.</p>
+            <p className="mt-2">Compra · Venda · Locação</p>
           </div>
         </div>
       </div>
@@ -136,44 +131,33 @@ function ClientPaths() {
   ];
 
   return (
-    <section aria-labelledby="client-paths-title" className="bg-background py-16 sm:py-20">
+    <section aria-labelledby="client-paths-title" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Como posso ajudar?
-          </p>
-          <h2 id="client-paths-title" className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Escolha o seu próximo passo.
+        <div className="max-w-3xl">
+          <h2 id="client-paths-title" className="max-w-3xl text-3xl font-semibold leading-snug tracking-tight sm:text-4xl">
+            A busca começa com uma conversa clara sobre o que você procura.
           </h2>
         </div>
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid border-y border-border md:grid-cols-3">
           {paths.map(({ action, description, external, href, icon: Icon, title }) => (
-            <Card key={title}>
-              <CardHeader>
-                <Icon className="mb-3 text-primary" aria-hidden="true" />
-                <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1" />
-              <CardFooter>
+            <article key={title} className="flex min-h-72 flex-col border-border px-0 py-8 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 lg:py-10">
+              <Icon className="text-primary" aria-hidden="true" />
+              <h3 className="mt-10 text-2xl font-semibold tracking-tight">{title}</h3>
+              <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">{description}</p>
+              <div className="mt-auto pt-8">
                 {external ? (
-                  <a
-                    className={buttonVariants({ variant: "outline" })}
-                    href={href}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
+                  <a className="inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-70" href={href} rel="noreferrer" target="_blank">
                     {action}
-                    <ArrowRightIcon data-icon="inline-end" />
+                    <ArrowUpRightIcon data-icon="inline-end" />
                   </a>
                 ) : (
-                  <Link className={buttonVariants({ variant: "outline" })} href={href}>
+                  <Link className="inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-70" href={href}>
                     {action}
-                    <ArrowRightIcon data-icon="inline-end" />
+                    <ArrowUpRightIcon data-icon="inline-end" />
                   </Link>
                 )}
-              </CardFooter>
-            </Card>
+              </div>
+            </article>
           ))}
         </div>
       </div>
@@ -189,24 +173,18 @@ function Services() {
   ];
 
   return (
-    <section className="bg-secondary/40 py-16 sm:py-20">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-[0.9fr_1.1fr] lg:px-8">
+    <section className="bg-secondary/65 py-20 sm:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 md:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Atendimento
-          </p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Atendimento consultivo para cada etapa da sua decisão imobiliária.
+          <h2 className="text-3xl font-semibold leading-snug tracking-tight sm:text-4xl">
+            Decisões importantes pedem informação, repertório e presença.
           </h2>
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {items.map((item) => (
-            <div key={item} className="rounded-lg border bg-background p-5 shadow-sm">
-              <HomeIcon className="mb-5 text-primary" />
-              <div className="flex items-start gap-2">
-                <CheckCircle2Icon data-icon="inline-start" />
-                <p className="text-sm leading-6 text-muted-foreground">{item}</p>
-              </div>
+        <div className="border-t border-border">
+          {items.map((item, index) => (
+            <div key={item} className="grid grid-cols-[auto_1fr] gap-5 border-b border-border py-6 sm:gap-8">
+              <span className="text-2xl font-medium text-muted-foreground">0{index + 1}</span>
+              <p className="max-w-lg text-lg leading-7 text-foreground/80">{item}</p>
             </div>
           ))}
         </div>
