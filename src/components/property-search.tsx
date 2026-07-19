@@ -82,22 +82,18 @@ export function PropertySearch({ properties }: PropertySearchProps) {
   }
 
   return (
-    <section id="busca" className="scroll-mt-24 bg-secondary/65 py-20 sm:py-24">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold leading-snug tracking-tight sm:text-4xl">
-            Comece pelo que mais importa para você.
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Escolha os critérios essenciais agora e refine os detalhes no catálogo.
-          </p>
-        </div>
-
+    <section id="busca" className="relative -mt-10 scroll-mt-24 pb-12 sm:-mt-14 sm:pb-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <form
+          action={purpose === "RENT" ? "/imoveis/para-alugar" : "/imoveis/a-venda"}
           aria-label="Busca de imóveis"
-          className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7"
+          className="rounded-[2rem] border border-border bg-background p-5 shadow-[0_20px_50px_rgba(0,0,0,0.12)] sm:p-7"
+          method="get"
           onSubmit={handleSubmit}
         >
+          <h2 className="mb-5 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Buscar imóveis
+          </h2>
           <FieldGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <FilterSelect
               id="home-purpose"
@@ -164,7 +160,7 @@ export function PropertySearch({ properties }: PropertySearchProps) {
           </FieldGroup>
 
           <div className="mt-5 flex justify-end">
-            <button className={buttonVariants({ size: "lg", className: "w-full sm:w-auto" })} type="submit">
+            <button className={buttonVariants({ size: "lg", className: "w-full px-6 sm:w-auto" })} type="submit">
               <SearchIcon data-icon="inline-start" />
               Ver imóveis
             </button>
