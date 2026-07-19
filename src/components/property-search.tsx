@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { SearchIcon } from "lucide-react";
-import { PropertyCard } from "@/components/property-card";
 import { Button } from "@/components/ui/button";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
 import type { Property } from "@/types/property";
 
 type PropertySearchProps = {
@@ -28,167 +22,187 @@ type PropertySearchProps = {
 
 const anyValue = "ANY";
 
+const purposeOptions = [
+  { label: "Comprar", value: "SALE" },
+  { label: "Alugar", value: "RENT" },
+];
+
+const typeLabels: Record<Property["type"], string> = {
+  HOUSE: "Casa",
+  CONDO_HOUSE: "Casa em condomínio",
+  APARTMENT: "Apartamento",
+  LAND: "Terreno",
+  STUDIO: "Studio",
+  COMMERCIAL: "Comercial",
+};
+
 export function PropertySearch({ properties }: PropertySearchProps) {
-  const [purpose, setPurpose] = useState(anyValue);
-  const [city, setCity] = useState(anyValue);
+  const router = useRouter();
+  const [purpose, setPurpose] = useState("SALE");
+  const [type, setType] = useState(anyValue);
   const [district, setDistrict] = useState(anyValue);
-  const [community, setCommunity] = useState(anyValue);
-  const [isCondo, setIsCondo] = useState(anyValue);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-  const cities = useMemo(() => unique(properties.map((property) => property.city)), [properties]);
-  const districts = useMemo(
-    () => unique(properties.map((property) => property.district).filter(Boolean) as string[]),
+  const typeOptions = useMemo(
+    () => [
+      { label: "Todos os tipos", value: anyValue },
+      ...unique(properties.map((property) => property.type)).map((value) => ({
+        label: typeLabels[value],
+        value,
+      })),
+    ],
     [properties]
   );
-  const communities = useMemo(
-    () => unique(properties.map((property) => property.community).filter(Boolean) as string[]),
+  const districtOptions = useMemo(
+    () => [
+      { label: "Todos os bairros", value: anyValue },
+      ...unique(
+        properties
+          .map((property) => property.district)
+          .filter(Boolean) as string[]
+      ).map((value) => ({ label: value, value })),
+    ],
     [properties]
   );
 
-  const filtered = properties.filter((property) => {
-    return (
-      (purpose === anyValue || property.purpose === purpose) &&
-      (city === anyValue || property.city === city) &&
-      (district === anyValue || property.district === district) &&
-      (community === anyValue || property.community === community) &&
-      (isCondo === anyValue || String(property.isCondo) === isCondo)
-    );
-  });
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const params = new URLSearchParams();
+
+    if (type !== anyValue) params.set("tipo", type);
+    if (district !== anyValue) params.set("bairro", district);
+    if (minPrice) params.set("precoMin", minPrice);
+    if (maxPrice) params.set("precoMax", maxPrice);
+
+    const pathname = purpose === "RENT" ? "/imoveis/para-alugar" : "/imoveis/a-venda";
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  }
 
   return (
-    <section id="busca" className="bg-secondary/45 py-14">
+    <section id="busca" className="scroll-mt-24 bg-secondary/45 py-14 sm:py-16">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Encontre seu novo imóvel
           </p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-            Filtre por objetivo, localização e condomínio.
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Comece pelo que mais importa para você.
           </h2>
+          <p className="mt-3 text-muted-foreground">
+            Escolha os critérios essenciais agora e refine os detalhes no catálogo.
+          </p>
         </div>
 
-        <div className="rounded-lg border bg-background p-4 shadow-sm">
-          <FieldGroup className="grid gap-4 md:grid-cols-5">
+        <form
+          aria-label="Busca de imóveis"
+          className="rounded-xl border bg-background p-4 shadow-sm sm:p-6"
+          onSubmit={handleSubmit}
+        >
+          <FieldGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <FilterSelect
+              id="home-purpose"
               label="Transação"
-              selectedLabel={purposeLabel(purpose)}
+              items={purposeOptions}
               value={purpose}
               onChange={setPurpose}
             >
-              <SelectItem value={anyValue}>Comprar ou alugar</SelectItem>
-              <SelectItem value="SALE">Comprar</SelectItem>
-              <SelectItem value="RENT">Alugar</SelectItem>
-            </FilterSelect>
-            <FilterSelect
-              label="Cidade"
-              selectedLabel={city === anyValue ? "Todas" : city}
-              value={city}
-              onChange={setCity}
-            >
-              <SelectItem value={anyValue}>Todas</SelectItem>
-              {cities.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
+              {purposeOptions.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
                 </SelectItem>
               ))}
             </FilterSelect>
             <FilterSelect
+              id="home-type"
+              label="Tipo de imóvel"
+              items={typeOptions}
+              value={type}
+              onChange={setType}
+            >
+              {typeOptions.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </FilterSelect>
+            <FilterSelect
+              id="home-district"
               label="Bairro"
-              selectedLabel={district === anyValue ? "Todos" : district}
+              items={districtOptions}
               value={district}
               onChange={setDistrict}
             >
-              <SelectItem value={anyValue}>Todos</SelectItem>
-              {districts.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
+              {districtOptions.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
                 </SelectItem>
               ))}
             </FilterSelect>
-            <FilterSelect
-              label="Condomínio"
-              selectedLabel={community === anyValue ? "Todos" : community}
-              value={community}
-              onChange={setCommunity}
-            >
-              <SelectItem value={anyValue}>Todos</SelectItem>
-              {communities.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </FilterSelect>
-            <FilterSelect
-              label="Condomínio fechado?"
-              selectedLabel={condoLabel(isCondo)}
-              value={isCondo}
-              onChange={setIsCondo}
-            >
-              <SelectItem value={anyValue}>Tanto faz</SelectItem>
-              <SelectItem value="true">Sim</SelectItem>
-              <SelectItem value="false">Não</SelectItem>
-            </FilterSelect>
+            <Field>
+              <FieldLabel>Faixa de preço</FieldLabel>
+              <div className="grid grid-cols-2 gap-2">
+                <Input
+                  aria-label="Preço mínimo"
+                  inputMode="numeric"
+                  min="0"
+                  placeholder="Mínimo"
+                  type="number"
+                  value={minPrice}
+                  onChange={(event) => setMinPrice(event.target.value)}
+                />
+                <Input
+                  aria-label="Preço máximo"
+                  inputMode="numeric"
+                  min="0"
+                  placeholder="Máximo"
+                  type="number"
+                  value={maxPrice}
+                  onChange={(event) => setMaxPrice(event.target.value)}
+                />
+              </div>
+            </Field>
           </FieldGroup>
-          <div className="mt-4 flex items-center justify-between gap-3 text-sm text-muted-foreground">
-            <span>{filtered.length} imóveis encontrados</span>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                setPurpose(anyValue);
-                setCity(anyValue);
-                setDistrict(anyValue);
-                setCommunity(anyValue);
-                setIsCondo(anyValue);
-              }}
-            >
+
+          <div className="mt-5 flex justify-end">
+            <Button className="w-full sm:w-auto" size="lg" type="submit">
               <SearchIcon data-icon="inline-start" />
-              Limpar busca
+              Ver imóveis
             </Button>
           </div>
-        </div>
-
-        {filtered.length ? (
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.slice(0, 6).map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-        ) : (
-          <Empty className="min-h-64 border bg-background">
-            <EmptyHeader>
-              <EmptyMedia variant="icon"><SearchIcon /></EmptyMedia>
-              <EmptyTitle>Nenhum imóvel disponível</EmptyTitle>
-              <EmptyDescription>
-                Não há imóveis que correspondam aos filtros selecionados.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        )}
+        </form>
       </div>
     </section>
   );
 }
 
 function FilterSelect({
+  id,
   label,
-  selectedLabel,
+  items,
   value,
   onChange,
   children,
 }: {
+  id: string;
   label: string;
-  selectedLabel: string;
+  items: { label: string; value: string }[];
   value: string;
   onChange: (value: string) => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <Field>
-      <FieldLabel>{label}</FieldLabel>
-      <Select value={value} onValueChange={(nextValue) => onChange(nextValue ?? anyValue)}>
-        <SelectTrigger className="h-11 w-full">
-          <SelectValue>{selectedLabel}</SelectValue>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Select
+        items={items}
+        value={value}
+        onValueChange={(nextValue) => onChange(nextValue ?? anyValue)}
+      >
+        <SelectTrigger id={id} className="h-11 w-full">
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>{children}</SelectGroup>
@@ -198,30 +212,6 @@ function FilterSelect({
   );
 }
 
-function unique(values: string[]) {
+function unique<T extends string>(values: T[]) {
   return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
-}
-
-function purposeLabel(value: string) {
-  if (value === "SALE") {
-    return "Comprar";
-  }
-
-  if (value === "RENT") {
-    return "Alugar";
-  }
-
-  return "Comprar ou alugar";
-}
-
-function condoLabel(value: string) {
-  if (value === "true") {
-    return "Sim";
-  }
-
-  if (value === "false") {
-    return "Não";
-  }
-
-  return "Tanto faz";
 }

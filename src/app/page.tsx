@@ -1,54 +1,52 @@
 import Image from "next/image";
-import { ArrowRightIcon, CheckCircle2Icon, HomeIcon, MessageCircleIcon } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRightIcon,
+  CheckCircle2Icon,
+  HomeIcon,
+  KeyRoundIcon,
+  MessageCircleIcon,
+  SignpostIcon,
+} from "lucide-react";
 import { PropertyCarousel } from "@/components/property-carousel";
 import { PropertySearch } from "@/components/property-search";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { getProperties } from "@/lib/properties";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const properties = await getProperties();
-  const sale = properties.filter((property) => property.purpose === "SALE");
-  const rent = properties.filter((property) => property.purpose === "RENT");
   const featured = properties.filter((property) => property.isFeatured);
-  const launches = properties.filter((property) => property.isLaunch);
+  const curated = featured.length ? featured : properties.slice(0, 8);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <SiteHeader />
       <Hero />
+      <ClientPaths />
       <PropertySearch properties={properties} />
       <PropertyCarousel
-        anchorId="venda"
-        title="Imóveis à venda"
-        description="Casas, apartamentos e oportunidades selecionadas para comprar com segurança."
-        properties={sale}
-        href="/imoveis/a-venda"
-      />
-      <PropertyCarousel
-        anchorId="aluguel"
-        title="Imóveis para alugar"
-        description="Opções prontas para morar ou operar, com informações objetivas para decidir rápido."
-        properties={rent}
-        href="/imoveis/para-alugar"
-      />
-      <PropertyCarousel
-        anchorId="destaques"
-        title="Imóveis em Destaque"
-        description="Imóveis que merecem atenção especial por localização, acabamento ou potencial."
-        properties={featured}
-        href="/imoveis/destaques"
-      />
-      <PropertyCarousel
-        anchorId="lancamentos"
-        title="Lançamentos"
-        description="Novos empreendimentos e unidades com excelente potencial de valorização."
-        properties={launches}
-        href="/imoveis/lancamentos"
+        anchorId="imoveis-selecionados"
+        title="Imóveis selecionados"
+        description="Uma seleção da carteira para você conhecer as opções disponíveis em Indaiatuba e região."
+        properties={curated}
+        actions={[
+          { href: "/imoveis/a-venda", label: "Ver imóveis à venda" },
+          { href: "/imoveis/para-alugar", label: "Ver imóveis para alugar" },
+        ]}
       />
       <Services />
       <SiteFooter />
@@ -57,6 +55,8 @@ export default async function Home() {
 }
 
 function Hero() {
+  const whatsappHref = "https://wa.me/5519998383234";
+
   return (
     <section className="relative min-h-[680px] overflow-hidden bg-primary text-primary-foreground">
       <Image
@@ -78,24 +78,103 @@ function Hero() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82">
             Encontre o imóvel certo para comprar ou alugar com atendimento
-            próximo, filtros objetivos e uma vitrine fácil de atualizar.
+            próximo, filtros objetivos e informações claras para orientar sua busca.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" variant="secondary" nativeButton={false} render={<a href="#busca" />}>
+            <a className={buttonVariants({ size: "lg", variant: "secondary" })} href="#busca">
               Buscar imóveis
               <ArrowRightIcon data-icon="inline-end" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/35 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-              nativeButton={false}
-              render={<a href="https://wa.me/5519998383234" />}
+            </a>
+            <a
+              className={cn(
+                buttonVariants({ size: "lg", variant: "outline" }),
+                "border-white/35 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+              )}
+              href={whatsappHref}
+              rel="noreferrer"
+              target="_blank"
             >
               <MessageCircleIcon data-icon="inline-start" />
               Falar no WhatsApp
-            </Button>
+            </a>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ClientPaths() {
+  const sellMessage = encodeURIComponent(
+    "Olá, Carla! Quero conversar sobre a venda do meu imóvel."
+  );
+  const paths = [
+    {
+      title: "Comprar",
+      description: "Veja casas, apartamentos, terrenos e imóveis comerciais disponíveis para venda.",
+      href: "/imoveis/a-venda",
+      action: "Ver imóveis à venda",
+      icon: HomeIcon,
+      external: false,
+    },
+    {
+      title: "Alugar",
+      description: "Encontre opções para morar ou instalar seu negócio em Indaiatuba e região.",
+      href: "/imoveis/para-alugar",
+      action: "Ver imóveis para alugar",
+      icon: KeyRoundIcon,
+      external: false,
+    },
+    {
+      title: "Quero vender meu imóvel",
+      description: "Converse diretamente com a Carla para apresentar seu imóvel e entender os próximos passos.",
+      href: `https://wa.me/5519998383234?text=${sellMessage}`,
+      action: "Quero vender meu imóvel",
+      icon: SignpostIcon,
+      external: true,
+    },
+  ];
+
+  return (
+    <section aria-labelledby="client-paths-title" className="bg-background py-16 sm:py-20">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Como posso ajudar?
+          </p>
+          <h2 id="client-paths-title" className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Escolha o seu próximo passo.
+          </h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {paths.map(({ action, description, external, href, icon: Icon, title }) => (
+            <Card key={title}>
+              <CardHeader>
+                <Icon className="mb-3 text-primary" aria-hidden="true" />
+                <CardTitle>{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1" />
+              <CardFooter>
+                {external ? (
+                  <a
+                    className={buttonVariants({ variant: "outline" })}
+                    href={href}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {action}
+                    <ArrowRightIcon data-icon="inline-end" />
+                  </a>
+                ) : (
+                  <Link className={buttonVariants({ variant: "outline" })} href={href}>
+                    {action}
+                    <ArrowRightIcon data-icon="inline-end" />
+                  </Link>
+                )}
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
     </section>
@@ -117,7 +196,7 @@ function Services() {
             Atendimento
           </p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Uma operacao simples para manter a carteira sempre atualizada.
+            Atendimento consultivo para cada etapa da sua decisão imobiliária.
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">

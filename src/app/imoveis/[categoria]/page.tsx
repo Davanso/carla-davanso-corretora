@@ -34,10 +34,13 @@ export function generateStaticParams() {
 
 export default async function PropertiesCategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ categoria: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { categoria } = await params;
+  const query = await searchParams;
   const category = categories[categoria as CategoryKey];
 
   if (!category) {
@@ -46,12 +49,59 @@ export default async function PropertiesCategoryPage({
 
   const properties = await getProperties();
   const filtered = properties.filter(category.filter);
+  const initialFilters = {
+    type: validPropertyType(query.tipo),
+    district: validDistrict(query.bairro, filtered),
+    minPrice: validPrice(query.precoMin),
+    maxPrice: validPrice(query.precoMax),
+  };
+  const listingKey = [
+    initialFilters.type,
+    initialFilters.district,
+    initialFilters.minPrice,
+    initialFilters.maxPrice,
+  ].join("|");
 
   return (
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader />
-      <PropertyListing properties={filtered} title={category.title} />
+      <PropertyListing
+        key={listingKey}
+        properties={filtered}
+        title={category.title}
+        initialFilters={initialFilters}
+      />
       <SiteFooter />
     </main>
   );
+}
+
+const propertyTypes: readonly Property["type"][] = [
+  "HOUSE",
+  "CONDO_HOUSE",
+  "APARTMENT",
+  "LAND",
+  "STUDIO",
+  "COMMERCIAL",
+];
+
+function validPropertyType(value: string | string[] | undefined) {
+  if (typeof value !== "string") return undefined;
+
+  return propertyTypes.includes(value as Property["type"])
+    ? (value as Property["type"])
+    : undefined;
+}
+
+function validDistrict(value: string | string[] | undefined, properties: Property[]) {
+  if (typeof value !== "string") return undefined;
+
+  return properties.some((property) => property.district === value) ? value : undefined;
+}
+
+function validPrice(value: string | string[] | undefined) {
+  if (typeof value !== "string" || value.trim() === "") return undefined;
+
+  const price = Number(value);
+  return Number.isFinite(price) && price >= 0 ? String(price) : undefined;
 }

@@ -4,3 +4,8 @@ Create one short Markdown plan per initiative from `../templates/plan.md`.
 Keep it current while work is underway, then retain it as the implementation and
 verification record. Do not create a plan for a one-file, low-risk correction
 unless the user asks for one.
+
+| Plan | Status | Summary |
+| --- | --- | --- |
+| `001-production-catalogue.md` | Historical | Production catalogue, single-admin auth, and R2 upload foundation. |
+| `002-public-client-journey.md` | Implemented | Client-first public navigation, simpler homepage, progressive catalogue filters, and Yahoo-only public email. |

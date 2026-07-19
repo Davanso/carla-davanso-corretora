@@ -18,8 +18,8 @@ const contacts = [
   },
   {
     label: "E-mail",
-    value: "contato@carladavanso.com.br",
-    href: "mailto:contato@carladavanso.com.br",
+    value: "carladestro@yahoo.com.br",
+    href: "mailto:carladestro@yahoo.com.br",
     icon: MailIcon,
   },
   {

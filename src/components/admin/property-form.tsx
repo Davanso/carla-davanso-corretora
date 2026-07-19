@@ -319,9 +319,10 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
+            <FormSectionTitle title="Informações principais" description="Como o imóvel será apresentado no catálogo." />
             <div className="grid gap-5 md:grid-cols-2">
               <TextField id="title" label="Título" register={register("title")} error={errors.title} />
-              <NumberField id="price" label="Valor" register={register("price", { valueAsNumber: true })} error={errors.price} />
+              <NumberField id="price" label="Preço de venda ou aluguel (R$)" register={register("price", { valueAsNumber: true })} error={errors.price} />
             </div>
             <Field data-invalid={Boolean(errors.description)}>
               <FieldLabel htmlFor="description">Descrição</FieldLabel>
@@ -329,14 +330,15 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
               <FieldError errors={[errors.description]} />
             </Field>
             <div className="grid gap-5 md:grid-cols-3">
-              <SelectField control={control} name="purpose" label="Transação" options={[{ value: "SALE", label: "Venda" }, { value: "RENT", label: "Aluguel" }]} />
+              <SelectField control={control} name="purpose" label="Objetivo do anúncio" options={[{ value: "SALE", label: "Venda" }, { value: "RENT", label: "Aluguel" }]} />
               <SelectField control={control} name="type" label="Tipo" options={[
                 { value: "HOUSE", label: "Casa" }, { value: "CONDO_HOUSE", label: "Casa de condomínio" },
                 { value: "APARTMENT", label: "Apartamento" }, { value: "LAND", label: "Terreno" },
                 { value: "STUDIO", label: "Studio" }, { value: "COMMERCIAL", label: "Comercial" },
               ]} />
-              <NumberField id="condoFee" label="Condomínio" register={register("condoFee", { valueAsNumber: true })} error={errors.condoFee} />
+              <NumberField id="condoFee" label="Taxa de condomínio (mensal, R$)" description="Informe o valor mensal ou deixe 0 se não houver." register={register("condoFee", { valueAsNumber: true })} error={errors.condoFee} />
             </div>
+            <FormSectionTitle title="Características" description="Detalhes que ajudam o cliente a comparar os imóveis." />
             <div className="grid gap-5 md:grid-cols-4">
               <NumberField id="areaM2" label="m²" register={register("areaM2", { valueAsNumber: true })} error={errors.areaM2} />
               <NumberField id="bedrooms" label="Quartos" register={register("bedrooms", { valueAsNumber: true })} error={errors.bedrooms} />
@@ -346,11 +348,11 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
             <div className="grid gap-5 md:grid-cols-3">
               <TextField id="city" label="Cidade" register={register("city")} error={errors.city} />
               <TextField id="district" label="Bairro" register={register("district")} error={errors.district} />
-              <TextField id="community" label="Condomínio / empreendimento" register={register("community")} error={errors.community} />
+              <TextField id="community" label="Nome do condomínio / empreendimento (opcional)" register={register("community")} error={errors.community} />
             </div>
-
+            <FormSectionTitle title="Fotos" description="Ajude o cliente a encontrar o imóvel; a primeira foto será a capa." />
             <Field data-invalid={Boolean(errors.images)}>
-              <FieldLabel htmlFor="images">Fotos</FieldLabel>
+              <FieldLabel htmlFor="images">Adicionar fotos</FieldLabel>
               <Input
                 id="images"
                 type="file"
@@ -404,11 +406,17 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
               )}
             </Field>
 
-            <div className="grid gap-4 md:grid-cols-4">
-              <Controller control={control} name="isCondo" render={({ field }) => <BooleanField label="Condomínio fechado" checked={field.value} onChange={field.onChange} />} />
-              <Controller control={control} name="isFeatured" render={({ field }) => <BooleanField label="Destaque" checked={field.value} onChange={field.onChange} />} />
-              <Controller control={control} name="isLaunch" render={({ field }) => <BooleanField label="Lançamento" checked={field.value} onChange={field.onChange} />} />
-              <Controller control={control} name="isPublished" render={({ field }) => <BooleanField label="Publicado" checked={field.value} onChange={field.onChange} />} />
+            <div className="rounded-lg border bg-muted/20 p-4">
+              <div className="mb-3">
+                <p className="text-sm font-medium">Organização e publicação</p>
+                <p className="text-sm text-muted-foreground">Use estas opções para classificar o imóvel no catálogo.</p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Controller control={control} name="isCondo" render={({ field }) => <BooleanField label="Fica em condomínio fechado" checked={field.value} onChange={field.onChange} />} />
+                <Controller control={control} name="isFeatured" render={({ field }) => <BooleanField label="Mostrar como destaque" checked={field.value} onChange={field.onChange} />} />
+                <Controller control={control} name="isLaunch" render={({ field }) => <BooleanField label="Marcar como lançamento" checked={field.value} onChange={field.onChange} />} />
+                <Controller control={control} name="isPublished" render={({ field }) => <BooleanField label="Publicar no site" checked={field.value} onChange={field.onChange} />} />
+              </div>
             </div>
             <Button type="submit" className="h-10 w-full md:w-fit" disabled={isSubmitting || hasPendingUploads || hasFailedUploads}>
               {isSubmitting ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : initialProperty ? <SaveIcon data-icon="inline-start" /> : <PlusIcon data-icon="inline-start" />}
@@ -489,11 +497,21 @@ function TextField({ id, label, register, error }: { id: string; label: string; 
   );
 }
 
-function NumberField({ id, label, register, error }: { id: string; label: string; register: UseFormRegisterReturn; error?: { message?: string } }) {
+function FormSectionTitle({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="border-b pb-2 pt-2">
+      <h3 className="text-sm font-semibold">{title}</h3>
+      <p className="text-sm text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
+function NumberField({ id, label, description, register, error }: { id: string; label: string; description?: string; register: UseFormRegisterReturn; error?: { message?: string } }) {
   return (
     <Field data-invalid={Boolean(error)}>
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
       <Input id={id} type="number" step={id === "price" || id === "condoFee" ? "0.01" : "1"} aria-invalid={Boolean(error)} {...register} />
+      {description ? <FieldDescription>{description}</FieldDescription> : null}
       <FieldError errors={[error]} />
     </Field>
   );
@@ -505,7 +523,7 @@ function SelectField({ control, name, label, options }: { control: ReturnType<ty
       <FieldLabel>{label}</FieldLabel>
       <Controller control={control} name={name} render={({ field }) => (
         <Select value={field.value} onValueChange={(value) => value && field.onChange(value)}>
-          <SelectTrigger className="h-10 w-full"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="h-10 w-full"><SelectValue>{options.find((option) => option.value === field.value)?.label}</SelectValue></SelectTrigger>
           <SelectContent><SelectGroup>{options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectGroup></SelectContent>
         </Select>
       )} />

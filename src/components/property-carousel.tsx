@@ -14,7 +14,10 @@ type PropertyCarouselProps = {
   description?: string;
   properties: Property[];
   anchorId: string;
-  href?: string;
+  actions: Array<{
+    href: string;
+    label: string;
+  }>;
 };
 
 export function PropertyCarousel({
@@ -22,7 +25,7 @@ export function PropertyCarousel({
   description,
   properties,
   anchorId,
-  href = "/imoveis/a-venda",
+  actions,
 }: PropertyCarouselProps) {
   if (!properties.length) {
     return null;
@@ -43,9 +46,18 @@ export function PropertyCarousel({
               <p className="mt-3 text-muted-foreground">{description}</p>
             ) : null}
           </div>
-          <Button variant="outline" nativeButton={false} render={<a href={href} />}>
-            Ver todos
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            {actions.map((action) => (
+              <Button
+                key={action.href}
+                variant="outline"
+                nativeButton={false}
+                render={<a href={action.href} />}
+              >
+                {action.label}
+              </Button>
+            ))}
+          </div>
         </div>
 
         <Carousel opts={{ align: "start" }} className="px-0 sm:px-12">

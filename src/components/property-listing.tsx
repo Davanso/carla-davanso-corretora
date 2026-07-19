@@ -18,21 +18,27 @@ import type { Property } from "@/types/property";
 type PropertyListingProps = {
   properties: Property[];
   title: string;
+  initialFilters?: {
+    type?: Property["type"];
+    district?: string;
+    minPrice?: string;
+    maxPrice?: string;
+  };
 };
 
 const anyValue = "ANY";
 
-export function PropertyListing({ properties, title }: PropertyListingProps) {
-  const [type, setType] = useState(anyValue);
+export function PropertyListing({ properties, title, initialFilters }: PropertyListingProps) {
+  const [type, setType] = useState(initialFilters?.type ?? anyValue);
   const [city, setCity] = useState(anyValue);
-  const [district, setDistrict] = useState(anyValue);
+  const [district, setDistrict] = useState(initialFilters?.district ?? anyValue);
   const [community, setCommunity] = useState(anyValue);
   const [isCondo, setIsCondo] = useState(anyValue);
   const [bedrooms, setBedrooms] = useState(anyValue);
   const [bathrooms, setBathrooms] = useState(anyValue);
   const [parkingSpots, setParkingSpots] = useState(anyValue);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [minPrice, setMinPrice] = useState(initialFilters?.minPrice ?? "");
+  const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice ?? "");
   const [sort, setSort] = useState("recentes");
 
   const options = useMemo(
@@ -103,7 +109,7 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
           </div>
 
           <FieldGroup className="gap-4">
-            <SelectField label="Tipo de imóvel" value={type} onChange={setType}>
+            <SelectField id="property-type" label="Tipo de imóvel" value={type} onChange={setType}>
               <option value={anyValue}>Todos</option>
               {options.types.map((item) => (
                 <option key={item} value={item}>
@@ -111,34 +117,13 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
                 </option>
               ))}
             </SelectField>
-            <SelectField label="Cidade" value={city} onChange={setCity}>
-              <option value={anyValue}>Todas</option>
-              {options.cities.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </SelectField>
-            <SelectField label="Bairro" value={district} onChange={setDistrict}>
+            <SelectField id="property-district" label="Bairro" value={district} onChange={setDistrict}>
               <option value={anyValue}>Todos</option>
               {options.districts.map((item) => (
                 <option key={item} value={item}>
                   {item}
                 </option>
               ))}
-            </SelectField>
-            <SelectField label="Condomínio" value={community} onChange={setCommunity}>
-              <option value={anyValue}>Indiferente</option>
-              {options.communities.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </SelectField>
-            <SelectField label="Condomínio fechado?" value={isCondo} onChange={setIsCondo}>
-              <option value={anyValue}>Indiferente</option>
-              <option value="true">Sim</option>
-              <option value="false">Não</option>
             </SelectField>
 
             <div className="grid grid-cols-2 gap-3">
@@ -148,6 +133,7 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
                   id="minPrice"
                   type="number"
                   inputMode="numeric"
+                  min="0"
                   value={minPrice}
                   onChange={(event) => setMinPrice(event.target.value)}
                 />
@@ -158,23 +144,73 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
                   id="maxPrice"
                   type="number"
                   inputMode="numeric"
+                  min="0"
                   value={maxPrice}
                   onChange={(event) => setMaxPrice(event.target.value)}
                 />
               </Field>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              <SelectField label="Quartos" value={bedrooms} onChange={setBedrooms}>
-                <NumberOptions />
-              </SelectField>
-              <SelectField label="Banheiros" value={bathrooms} onChange={setBathrooms}>
-                <NumberOptions />
-              </SelectField>
-              <SelectField label="Vagas" value={parkingSpots} onChange={setParkingSpots}>
-                <NumberOptions />
-              </SelectField>
-            </div>
+            <SelectField id="property-bedrooms" label="Quartos" value={bedrooms} onChange={setBedrooms}>
+              <NumberOptions />
+            </SelectField>
+
+            <details className="group rounded-lg border bg-background">
+              <summary className="cursor-pointer select-none px-3 py-2.5 text-sm font-medium focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+                Mais filtros
+              </summary>
+              <FieldGroup className="border-t p-3">
+                {options.cities.length > 1 ? (
+                  <SelectField id="property-city" label="Cidade" value={city} onChange={setCity}>
+                    <option value={anyValue}>Todas</option>
+                    {options.cities.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </SelectField>
+                ) : null}
+                <SelectField
+                  id="property-community"
+                  label="Condomínio"
+                  value={community}
+                  onChange={setCommunity}
+                >
+                  <option value={anyValue}>Indiferente</option>
+                  {options.communities.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </SelectField>
+                <SelectField
+                  id="property-is-condo"
+                  label="Condomínio fechado?"
+                  value={isCondo}
+                  onChange={setIsCondo}
+                >
+                  <option value={anyValue}>Indiferente</option>
+                  <option value="true">Sim</option>
+                  <option value="false">Não</option>
+                </SelectField>
+                <SelectField
+                  id="property-bathrooms"
+                  label="Banheiros"
+                  value={bathrooms}
+                  onChange={setBathrooms}
+                >
+                  <NumberOptions />
+                </SelectField>
+                <SelectField
+                  id="property-parking"
+                  label="Vagas"
+                  value={parkingSpots}
+                  onChange={setParkingSpots}
+                >
+                  <NumberOptions />
+                </SelectField>
+              </FieldGroup>
+            </details>
 
             <Button type="button" className="h-10" onClick={clearFilters}>
               Limpar filtros
@@ -227,11 +263,13 @@ export function PropertyListing({ properties, title }: PropertyListingProps) {
 }
 
 function SelectField({
+  id,
   label,
   value,
   onChange,
   children,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -239,8 +277,9 @@ function SelectField({
 }) {
   return (
     <Field>
-      <FieldLabel>{label}</FieldLabel>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
       <select
+        id={id}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
