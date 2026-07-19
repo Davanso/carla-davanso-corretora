@@ -1,8 +1,14 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 import { LoginForm } from "@/app/admin/login/login-form";
+import { getAuthenticatedAdminEmail } from "@/lib/admin-auth";
 
-export default function AdminLoginPage() {
+export default async function AdminLoginPage() {
+  if (await getAuthenticatedAdminEmail()) {
+    redirect("/admin");
+  }
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <section className="flex w-full max-w-md flex-col gap-8">

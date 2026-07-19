@@ -37,7 +37,7 @@ export function SiteHeader() {
           <Link href="/imoveis/lancamentos">Lançamentos</Link>
           <Link href="/contato">Contato</Link>
         </nav>
-        <Button size="sm" nativeButton={false} render={<Link href="/admin/login" />}>
+        <Button size="sm" nativeButton={false} render={<Link href="/admin" />}>
           <KeyRoundIcon data-icon="inline-start" />
           Painel
         </Button>
