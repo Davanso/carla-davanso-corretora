@@ -32,16 +32,17 @@ export function SiteHeader() {
         <div className="hidden items-center gap-2 lg:flex">
           <a
             aria-label="Abrir Instagram @imoveiscomcarladavanso"
-            className={buttonVariants({ variant: "ghost", size: "icon-lg" })}
+            className={buttonVariants({ variant: "ghost", size: "lg" })}
             href="https://www.instagram.com/imoveiscomcarladavanso/"
             rel="noopener noreferrer"
             target="_blank"
           >
-            <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg aria-hidden="true" className="size-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <rect height="18" rx="5" stroke="currentColor" strokeWidth="2" width="18" x="3" y="3" />
               <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
               <circle cx="17.5" cy="6.5" fill="currentColor" r="1.25" />
             </svg>
+            @imoveiscomcarladavanso
           </a>
           <a className={buttonVariants({ size: "lg" })} href={whatsappHref} rel="noreferrer" target="_blank">
             <MessageCircleIcon data-icon="inline-start" />

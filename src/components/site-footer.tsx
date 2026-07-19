@@ -1,4 +1,4 @@
-import { CameraIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export function SiteFooter() {
@@ -30,7 +30,11 @@ export function SiteFooter() {
             rel="noopener noreferrer"
             aria-label="Abrir Instagram @imoveiscomcarladavanso"
           >
-            <CameraIcon data-icon="inline-start" />
+            <svg aria-hidden="true" className="size-6" data-icon="inline-start" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect height="18" rx="5" stroke="currentColor" strokeWidth="2" width="18" x="3" y="3" />
+              <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
+              <circle cx="17.5" cy="6.5" fill="currentColor" r="1.25" />
+            </svg>
             @imoveiscomcarladavanso
           </a>
         </div>
