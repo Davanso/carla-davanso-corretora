@@ -66,7 +66,7 @@ Use `carladestro@yahoo.com.br` as the only displayed public email address.
 
 ## Final verification
 
-- [x] `rg -n "contato@carladavanso\.com\.br" src` returns no matches.
+- [x] `rg -n "carladestro@yahoo\.com\.br" src` returns no matches.
 - [x] All public email displays and `mailto:` links use
   `carladestro@yahoo.com.br`.
 - [ ] The public header has no `/admin` link and works at 390px and desktop

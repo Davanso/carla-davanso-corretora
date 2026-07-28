@@ -100,8 +100,8 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 <div>
                   <CardTitle className="mb-6">Dimensões e metragens</CardTitle>
                   <div className="grid gap-7 sm:grid-cols-2">
-                    <DetailFeature icon={RulerIcon} title={`${builtArea} m² área construída`} description="É a soma da área total de todos os pavimentos" />
-                    <DetailFeature icon={RulerIcon} title={`${landArea} m² área total`} description="Área total do terreno onde o imóvel está localizado" />
+                    <DetailFeature icon={RulerIcon} title={`${builtArea} m² área construída`} description="É a soma da área construída em todos os pavimentos" />
+                    <DetailFeature icon={RulerIcon} title={`${landArea} m² área do terreno`} description="Metragem do terreno onde o imóvel está localizado" />
                   </div>
                 </div>
               </CardContent>
@@ -156,7 +156,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <Button size="icon" variant="outline" nativeButton={false} render={<a href={`https://wa.me/5519998383234?text=${message}`} target="_blank" rel="noreferrer" aria-label="Enviar WhatsApp para Carla Davanso" />}>
                     <MessageCircleIcon />
                   </Button>
-                  <Button size="icon" variant="outline" nativeButton={false} render={<a href="mailto:contato@carladavanso.com.br" aria-label="Enviar e-mail para Carla Davanso" />}>
+                  <Button size="icon" variant="outline" nativeButton={false} render={<a href="mailto:carladestro@yahoo.com.br" aria-label="Enviar e-mail para Carla Davanso" />}>
                     <MailIcon />
                   </Button>
                   <Button size="icon" variant="outline" nativeButton={false} render={<a href="https://www.instagram.com/imoveiscomcarladavanso/" target="_blank" rel="noreferrer" aria-label="Abrir Instagram da Carla Davanso" />}>

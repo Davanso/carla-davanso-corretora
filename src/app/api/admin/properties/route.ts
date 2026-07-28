@@ -102,7 +102,7 @@ async function createProperty(
         priceInCents: Math.round(values.price * 100),
         condoFeeCents: values.condoFee ? Math.round(values.condoFee * 100) : null,
         iptuFeeCents: values.iptuFee ? Math.round(values.iptuFee * 100) : null,
-        areaM2: values.areaM2,
+        areaM2: legacyAreaM2(values),
         landAreaM2: values.landAreaM2 || null,
         builtAreaM2: values.builtAreaM2 || null,
         bedrooms: values.bedrooms,
@@ -158,6 +158,10 @@ export function isUploadVerificationError(error: unknown) {
     "uploaded-object-changed",
     "ZodError",
   ].includes(error.message === "invalid-upload-token" ? error.message : error.name === "ZodError" ? "ZodError" : error.message);
+}
+
+function legacyAreaM2(values: Pick<PropertyCreateValues, "landAreaM2" | "builtAreaM2">) {
+  return values.landAreaM2 || values.builtAreaM2 || 1;
 }
 
 export { propertyInclude };

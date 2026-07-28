@@ -120,7 +120,6 @@ const createDefaults: AdminPropertyFormValues = {
   price: 0,
   condoFee: 0,
   iptuFee: 0,
-  areaM2: 0,
   landAreaM2: 0,
   builtAreaM2: 0,
   bedrooms: 0,
@@ -374,10 +373,9 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
               <TextField id="ownerPhone" label="Telefone do proprietário (privado)" register={register("ownerPhone")} error={errors.ownerPhone} />
             </div>
             <FormSectionTitle title="Características" description="Detalhes que ajudam o cliente a comparar os imóveis." />
-            <div className="grid gap-5 md:grid-cols-4">
+            <div className="grid gap-5 md:grid-cols-3">
               <NumberField id="landAreaM2" label="m² do terreno" register={register("landAreaM2", { valueAsNumber: true })} error={errors.landAreaM2} />
               <NumberField id="builtAreaM2" label="m² construídos" register={register("builtAreaM2", { valueAsNumber: true })} error={errors.builtAreaM2} />
-              <NumberField id="areaM2" label="m² total" register={register("areaM2", { valueAsNumber: true })} error={errors.areaM2} />
               <NumberField id="bedrooms" label="Quartos" register={register("bedrooms", { valueAsNumber: true })} error={errors.bedrooms} />
             </div>
             <div className="grid gap-5 md:grid-cols-4">
@@ -530,7 +528,6 @@ function propertyToFormValues(property: EditableAdminProperty): AdminPropertyFor
     price: property.priceInCents / 100,
     condoFee: (property.condoFeeCents ?? 0) / 100,
     iptuFee: (property.iptuFeeCents ?? 0) / 100,
-    areaM2: property.areaM2,
     landAreaM2: property.landAreaM2 ?? property.areaM2,
     builtAreaM2: property.builtAreaM2 ?? property.areaM2,
     bedrooms: property.bedrooms ?? 0,
