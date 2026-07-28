@@ -1,0 +1,7 @@
+ALTER TABLE "Property" ADD COLUMN "iptuFeeCents" INTEGER;
+ALTER TABLE "Property" ADD COLUMN "landAreaM2" INTEGER;
+ALTER TABLE "Property" ADD COLUMN "builtAreaM2" INTEGER;
+ALTER TABLE "Property" ADD COLUMN "suites" INTEGER;
+ALTER TABLE "Property" ADD COLUMN "livingRooms" INTEGER;
+ALTER TABLE "Property" ADD COLUMN "ownerName" TEXT;
+ALTER TABLE "Property" ADD COLUMN "ownerPhone" TEXT;

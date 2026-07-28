@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { ExternalLinkIcon, EyeIcon, EyeOffIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -20,10 +20,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
+import { propertyDetailPath } from "@/lib/property-url";
 
 export type AdminPropertySummary = {
   id: string;
   code: string;
+  slug: string;
   title: string;
   purpose: "SALE" | "RENT";
   priceInCents: number;
@@ -126,6 +128,10 @@ function PropertyRow({ property }: { property: AdminPropertySummary }) {
         <Button variant="outline" nativeButton={false} render={<Link href={`/admin/imoveis/${property.id}`} />}>
           <PencilIcon data-icon="inline-start" />
           Editar
+        </Button>
+        <Button variant="outline" nativeButton={false} render={<Link href={propertyDetailPath(property)} target="_blank" rel="noreferrer" />}>
+          <ExternalLinkIcon data-icon="inline-start" />
+          Ver no site
         </Button>
         <Button variant="outline" disabled={isPending} onClick={() => void setPublished(!property.isPublished)}>
           {property.isPublished ? <EyeOffIcon data-icon="inline-start" /> : <EyeIcon data-icon="inline-start" />}

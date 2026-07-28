@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  GripVerticalIcon,
   ImagePlusIcon,
   Loader2Icon,
   PlusIcon,
@@ -67,10 +68,17 @@ export type EditableAdminProperty = {
   type: "HOUSE" | "CONDO_HOUSE" | "APARTMENT" | "LAND" | "STUDIO" | "COMMERCIAL";
   priceInCents: number;
   condoFeeCents: number | null;
+  iptuFeeCents: number | null;
   areaM2: number;
+  landAreaM2: number | null;
+  builtAreaM2: number | null;
   bedrooms: number | null;
+  suites: number | null;
+  livingRooms: number | null;
   bathrooms: number | null;
   parkingSpots: number | null;
+  ownerName: string | null;
+  ownerPhone: string | null;
   isCondo: boolean;
   isFeatured: boolean;
   isLaunch: boolean;
@@ -111,10 +119,17 @@ const createDefaults: AdminPropertyFormValues = {
   type: "HOUSE",
   price: 0,
   condoFee: 0,
+  iptuFee: 0,
   areaM2: 0,
+  landAreaM2: 0,
+  builtAreaM2: 0,
   bedrooms: 0,
+  suites: 0,
+  livingRooms: 0,
   bathrooms: 0,
   parkingSpots: 0,
+  ownerName: "",
+  ownerPhone: "",
   city: "Indaiatuba",
   district: "",
   community: "",
@@ -134,6 +149,8 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
   const [imageItems, setImageItems] = useState<ImageItem[]>(() =>
     initialProperty ? propertyToImageItems(initialProperty) : [],
   );
+  const [draggedImageId, setDraggedImageId] = useState<string | null>(null);
+  const [isFileDragActive, setIsFileDragActive] = useState(false);
   const form = useForm<AdminPropertyFormValues>({
     resolver: zodResolver(adminPropertyFormSchema),
     defaultValues: initialValues,
@@ -306,6 +323,19 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
     });
   }
 
+  function reorderImage(fromId: string, toId: string) {
+    if (fromId === toId) return;
+    setImageItems((current) => {
+      const fromIndex = current.findIndex((item) => item.id === fromId);
+      const toIndex = current.findIndex((item) => item.id === toId);
+      if (fromIndex < 0 || toIndex < 0) return current;
+      const reordered = [...current];
+      const [moved] = reordered.splice(fromIndex, 1);
+      reordered.splice(toIndex, 0, moved);
+      return reordered;
+    });
+  }
+
   return (
     <Card className="rounded-lg">
       <CardHeader>
@@ -322,7 +352,7 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
             <FormSectionTitle title="Informações principais" description="Como o imóvel será apresentado no catálogo." />
             <div className="grid gap-5 md:grid-cols-2">
               <TextField id="title" label="Título" register={register("title")} error={errors.title} />
-              <NumberField id="price" label="Preço de venda ou aluguel (R$)" register={register("price", { valueAsNumber: true })} error={errors.price} />
+              <CurrencyField control={control} name="price" label="Preço de venda ou aluguel" error={errors.price} />
             </div>
             <Field data-invalid={Boolean(errors.description)}>
               <FieldLabel htmlFor="description">Descrição</FieldLabel>
@@ -336,12 +366,23 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
                 { value: "APARTMENT", label: "Apartamento" }, { value: "LAND", label: "Terreno" },
                 { value: "STUDIO", label: "Studio" }, { value: "COMMERCIAL", label: "Comercial" },
               ]} />
-              <NumberField id="condoFee" label="Taxa de condomínio (mensal, R$)" description="Informe o valor mensal ou deixe 0 se não houver." register={register("condoFee", { valueAsNumber: true })} error={errors.condoFee} />
+              <CurrencyField control={control} name="condoFee" label="Taxa de condomínio mensal" error={errors.condoFee} description="Informe o valor mensal ou deixe 0 se não houver." />
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              <CurrencyField control={control} name="iptuFee" label="IPTU" error={errors.iptuFee} description="Informe o valor do IPTU ou deixe 0 se não houver." />
+              <TextField id="ownerName" label="Nome do proprietário (privado)" register={register("ownerName")} error={errors.ownerName} />
+              <TextField id="ownerPhone" label="Telefone do proprietário (privado)" register={register("ownerPhone")} error={errors.ownerPhone} />
             </div>
             <FormSectionTitle title="Características" description="Detalhes que ajudam o cliente a comparar os imóveis." />
             <div className="grid gap-5 md:grid-cols-4">
-              <NumberField id="areaM2" label="m²" register={register("areaM2", { valueAsNumber: true })} error={errors.areaM2} />
+              <NumberField id="landAreaM2" label="m² do terreno" register={register("landAreaM2", { valueAsNumber: true })} error={errors.landAreaM2} />
+              <NumberField id="builtAreaM2" label="m² construídos" register={register("builtAreaM2", { valueAsNumber: true })} error={errors.builtAreaM2} />
+              <NumberField id="areaM2" label="m² total" register={register("areaM2", { valueAsNumber: true })} error={errors.areaM2} />
               <NumberField id="bedrooms" label="Quartos" register={register("bedrooms", { valueAsNumber: true })} error={errors.bedrooms} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-4">
+              <NumberField id="suites" label="Suítes" register={register("suites", { valueAsNumber: true })} error={errors.suites} />
+              <NumberField id="livingRooms" label="Salas" register={register("livingRooms", { valueAsNumber: true })} error={errors.livingRooms} />
               <NumberField id="bathrooms" label="Banheiros" register={register("bathrooms", { valueAsNumber: true })} error={errors.bathrooms} />
               <NumberField id="parkingSpots" label="Vagas" register={register("parkingSpots", { valueAsNumber: true })} error={errors.parkingSpots} />
             </div>
@@ -353,8 +394,34 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
             <FormSectionTitle title="Fotos" description="Ajude o cliente a encontrar o imóvel; a primeira foto será a capa." />
             <Field data-invalid={Boolean(errors.images)}>
               <FieldLabel htmlFor="images">Adicionar fotos</FieldLabel>
+              <label
+                htmlFor="images"
+                className={`flex min-h-32 cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-5 text-center transition ${isFileDragActive ? "border-primary bg-primary/5" : "bg-muted/20 hover:bg-muted/40"}`}
+                onDragEnter={(event) => {
+                  event.preventDefault();
+                  setIsFileDragActive(true);
+                }}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setIsFileDragActive(true);
+                }}
+                onDragLeave={(event) => {
+                  event.preventDefault();
+                  setIsFileDragActive(false);
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  setIsFileDragActive(false);
+                  void handleFiles(event.dataTransfer.files);
+                }}
+              >
+                <ImagePlusIcon aria-hidden="true" />
+                <span className="text-sm font-medium">Arraste as fotos aqui ou clique para selecionar</span>
+                <span className="text-xs text-muted-foreground">A primeira foto da lista será a capa do anúncio.</span>
+              </label>
               <Input
                 id="images"
+                className="sr-only"
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
                 multiple
@@ -374,7 +441,27 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
               ) : (
                 <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
                   {imageItems.map((item, index) => (
-                    <li key={`${item.kind}-${item.id}`} className="overflow-hidden rounded-lg border bg-card">
+                    <li
+                      key={`${item.kind}-${item.id}`}
+                      className={`overflow-hidden rounded-lg border bg-card transition ${draggedImageId === item.id ? "opacity-60 ring-2 ring-primary" : ""}`}
+                      draggable={!hasPendingUploads}
+                      onDragStart={(event) => {
+                        setDraggedImageId(item.id);
+                        event.dataTransfer.effectAllowed = "move";
+                        event.dataTransfer.setData("text/plain", item.id);
+                      }}
+                      onDragOver={(event) => {
+                        event.preventDefault();
+                        event.dataTransfer.dropEffect = "move";
+                      }}
+                      onDrop={(event) => {
+                        event.preventDefault();
+                        const sourceId = event.dataTransfer.getData("text/plain") || draggedImageId;
+                        if (sourceId) reorderImage(sourceId, item.id);
+                        setDraggedImageId(null);
+                      }}
+                      onDragEnd={() => setDraggedImageId(null)}
+                    >
                       <div className="relative aspect-[4/3] bg-muted">
                         {item.kind === "persisted" ? (
                           <Image src={item.publicUrl} alt={item.fileName} fill className="object-cover" />
@@ -392,6 +479,9 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
                         ) : null}
                         {item.kind === "upload" && item.error ? <p className="text-sm text-destructive">{item.error}</p> : null}
                         <div className="flex items-center gap-1">
+                          <Button type="button" variant="ghost" size="icon-sm" aria-label={`Arrastar ${item.fileName}`}>
+                            <GripVerticalIcon aria-hidden="true" />
+                          </Button>
                           {item.kind === "upload" && item.status === "error" ? (
                             <Button type="button" variant="outline" size="icon-sm" aria-label={`Tentar enviar ${item.fileName} novamente`} onClick={() => void retryUpload(item)}><RotateCcwIcon aria-hidden="true" /></Button>
                           ) : null}
@@ -418,10 +508,12 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
                 <Controller control={control} name="isPublished" render={({ field }) => <BooleanField label="Publicar no site" checked={field.value} onChange={field.onChange} />} />
               </div>
             </div>
-            <Button type="submit" className="h-10 w-full md:w-fit" disabled={isSubmitting || hasPendingUploads || hasFailedUploads}>
-              {isSubmitting ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : initialProperty ? <SaveIcon data-icon="inline-start" /> : <PlusIcon data-icon="inline-start" />}
-              {initialProperty ? "Salvar alterações" : "Cadastrar imóvel"}
-            </Button>
+            <div className="sticky bottom-4 z-30 rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur">
+              <Button type="submit" className="h-11 w-full md:w-fit" disabled={isSubmitting || hasPendingUploads || hasFailedUploads}>
+                {isSubmitting ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : initialProperty ? <SaveIcon data-icon="inline-start" /> : <PlusIcon data-icon="inline-start" />}
+                {initialProperty ? "Salvar alterações" : "Cadastrar imóvel"}
+              </Button>
+            </div>
           </FieldGroup>
         </form>
       </CardContent>
@@ -437,10 +529,17 @@ function propertyToFormValues(property: EditableAdminProperty): AdminPropertyFor
     type: property.type,
     price: property.priceInCents / 100,
     condoFee: (property.condoFeeCents ?? 0) / 100,
+    iptuFee: (property.iptuFeeCents ?? 0) / 100,
     areaM2: property.areaM2,
+    landAreaM2: property.landAreaM2 ?? property.areaM2,
+    builtAreaM2: property.builtAreaM2 ?? property.areaM2,
     bedrooms: property.bedrooms ?? 0,
+    suites: property.suites ?? 0,
+    livingRooms: property.livingRooms ?? 0,
     bathrooms: property.bathrooms ?? 0,
     parkingSpots: property.parkingSpots ?? 0,
+    ownerName: property.ownerName ?? "",
+    ownerPhone: property.ownerPhone ?? "",
     city: property.city.name,
     district: property.district?.name ?? "",
     community: property.community?.name ?? "",
@@ -506,6 +605,42 @@ function FormSectionTitle({ title, description }: { title: string; description: 
   );
 }
 
+function CurrencyField({
+  control,
+  name,
+  label,
+  description,
+  error,
+}: {
+  control: ReturnType<typeof useForm<AdminPropertyFormValues>>["control"];
+  name: "price" | "condoFee" | "iptuFee";
+  label: string;
+  description?: string;
+  error?: { message?: string };
+}) {
+  return (
+    <Field data-invalid={Boolean(error)}>
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <Input
+            id={name}
+            inputMode="numeric"
+            value={formatCurrencyInput(Number(field.value ?? 0))}
+            aria-invalid={Boolean(error)}
+            onChange={(event) => field.onChange(parseCurrencyInput(event.target.value))}
+            onBlur={field.onBlur}
+          />
+        )}
+      />
+      {description ? <FieldDescription>{description}</FieldDescription> : null}
+      <FieldError errors={[error]} />
+    </Field>
+  );
+}
+
 function NumberField({ id, label, description, register, error }: { id: string; label: string; description?: string; register: UseFormRegisterReturn; error?: { message?: string } }) {
   return (
     <Field data-invalid={Boolean(error)}>
@@ -515,6 +650,20 @@ function NumberField({ id, label, description, register, error }: { id: string; 
       <FieldError errors={[error]} />
     </Field>
   );
+}
+
+function formatCurrencyInput(value: number) {
+  if (!Number.isFinite(value) || value <= 0) return "";
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+}
+
+function parseCurrencyInput(value: string) {
+  const digits = value.replace(/\D/g, "");
+  if (!digits) return 0;
+  return Number(digits) / 100;
 }
 
 function SelectField({ control, name, label, options }: { control: ReturnType<typeof useForm<AdminPropertyFormValues>>["control"]; name: "purpose" | "type"; label: string; options: Array<{ value: string; label: string }> }) {

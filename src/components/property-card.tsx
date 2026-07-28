@@ -12,6 +12,7 @@ type PropertyCardProps = {
 export function PropertyCard({ property }: PropertyCardProps) {
   const image = property.images[0];
   const priceSuffix = property.purpose === "RENT" ? "/mês" : undefined;
+  const displayedArea = property.builtAreaM2 ?? property.areaM2;
 
   return (
     <article className="group overflow-hidden rounded-[2rem] border border-border/80 bg-card p-2 shadow-[0_12px_32px_rgba(0,0,0,0.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(0,0,0,0.12)]">
@@ -60,7 +61,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <Spec icon={BedDoubleIcon} value={property.bedrooms ?? 0} label="Quartos" />
           <Spec icon={BathIcon} value={property.bathrooms ?? 0} label="Banheiros" />
           <Spec icon={CarIcon} value={property.parkingSpots ?? 0} label="Vagas" />
-          <Spec icon={RulerIcon} value={property.areaM2} label="m²" />
+          <Spec icon={RulerIcon} value={displayedArea} label="m² const." />
         </div>
       </div>
     </article>

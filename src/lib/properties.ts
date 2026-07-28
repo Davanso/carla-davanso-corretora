@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { propertySlugFromParam } from "@/lib/property-url";
 import { sampleProperties } from "@/lib/sample-properties";
 import type { Property } from "@/types/property";
 
@@ -29,10 +30,17 @@ function mapProperty(property: PropertyWithRelations): Property {
     type: property.type,
     priceInCents: property.priceInCents,
     condoFeeCents: property.condoFeeCents,
+    iptuFeeCents: property.iptuFeeCents,
     areaM2: property.areaM2,
+    landAreaM2: property.landAreaM2,
+    builtAreaM2: property.builtAreaM2,
     bedrooms: property.bedrooms,
+    suites: property.suites,
+    livingRooms: property.livingRooms,
     bathrooms: property.bathrooms,
     parkingSpots: property.parkingSpots,
+    ownerName: property.ownerName,
+    ownerPhone: property.ownerPhone,
     isCondo: property.isCondo,
     isFeatured: property.isFeatured,
     isLaunch: property.isLaunch,
@@ -80,16 +88,17 @@ export async function getProperties(): Promise<Property[]> {
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  const normalizedSlug = propertySlugFromParam(slug);
   if (!process.env.DATABASE_URL) {
     if (canUseDevelopmentSamples()) {
-      return sampleProperties.find((property) => property.slug === slug) ?? null;
+      return sampleProperties.find((property) => property.slug === normalizedSlug) ?? null;
     }
     throw new CatalogueUnavailableError(new Error("DATABASE_URL não configurada."));
   }
 
   try {
     const property = await prisma.property.findFirst({
-      where: { slug, isPublished: true },
+      where: { slug: normalizedSlug, isPublished: true },
       include: propertyInclude,
     });
 

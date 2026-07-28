@@ -3,6 +3,7 @@ import { z } from "zod";
 export const MAX_PROPERTY_IMAGES = 20;
 export const MAX_PROPERTY_IMAGE_BYTES = 10 * 1024 * 1024;
 export const UPLOAD_URL_TTL_SECONDS = 60;
+export const UPLOAD_SCOPES = ["property", "broker"] as const;
 
 export const PROPERTY_IMAGE_CONTENT_TYPES = [
   "image/jpeg",
@@ -11,6 +12,7 @@ export const PROPERTY_IMAGE_CONTENT_TYPES = [
 ] as const;
 
 export type PropertyImageContentType = (typeof PROPERTY_IMAGE_CONTENT_TYPES)[number];
+export type UploadScope = (typeof UPLOAD_SCOPES)[number];
 
 const extensionsByContentType: Record<PropertyImageContentType, readonly string[]> = {
   "image/jpeg": ["jpg", "jpeg"],
@@ -21,7 +23,7 @@ const extensionsByContentType: Record<PropertyImageContentType, readonly string[
 export const propertyImageObjectKeySchema = z
   .string()
   .regex(
-    /^properties\/[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.(?:jpg|png|webp)$/,
+    /^(?:properties|settings\/broker)\/[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.(?:jpg|png|webp)$/,
     "Chave de imagem inválida.",
   );
 
@@ -79,6 +81,7 @@ const uploadFileSchema = z
   });
 
 export const uploadSigningRequestSchema = z.strictObject({
+  scope: z.enum(UPLOAD_SCOPES).optional().default("property"),
   files: z
     .array(uploadFileSchema)
     .min(1, "Selecione pelo menos uma imagem.")

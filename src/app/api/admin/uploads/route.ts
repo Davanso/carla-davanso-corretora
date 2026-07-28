@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   try {
     const uploads = await Promise.all(
       parsed.data.files.map((file) =>
-        createPropertyUploadUrl(file.contentType),
+        createPropertyUploadUrl(file.contentType, parsed.data.scope),
       ),
     );
 

@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut } from "@/auth";
+import { BrokerPhotoSettings } from "@/components/admin/broker-photo-settings";
 import { AdminPropertyForm } from "@/components/admin/property-form";
 import { PropertyManagementList } from "@/components/admin/property-management-list";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAuthenticatedAdminEmail } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export default async function AdminPage() {
   if (!(await getAuthenticatedAdminEmail())) {
@@ -20,6 +22,12 @@ export default async function AdminPage() {
         return [];
       })
     : [];
+  const siteSettings = process.env.DATABASE_URL && !databaseError
+    ? await getSiteSettings().catch(() => {
+        databaseError = true;
+        return { brokerPhotoObjectKey: null, brokerPhotoUrl: null };
+      })
+    : { brokerPhotoObjectKey: null, brokerPhotoUrl: null };
   if (!process.env.DATABASE_URL) databaseError = true;
   const sale = properties.filter((property) => property.purpose === "SALE").length;
   const rent = properties.filter((property) => property.purpose === "RENT").length;
@@ -66,9 +74,11 @@ export default async function AdminPage() {
           </Card>
         ) : (
           <>
+            <BrokerPhotoSettings brokerPhotoUrl={siteSettings.brokerPhotoUrl} />
             <PropertyManagementList properties={properties.map((property) => ({
               id: property.id,
               code: property.code,
+              slug: property.slug,
               title: property.title,
               purpose: property.purpose,
               priceInCents: property.priceInCents,

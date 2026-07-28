@@ -60,10 +60,17 @@ model Property {
   type           PropertyType
   priceInCents   Int
   condoFeeCents  Int?
+  iptuFeeCents   Int?
   areaM2         Int
+  landAreaM2     Int?
+  builtAreaM2    Int?
   bedrooms       Int?
+  suites         Int?
+  livingRooms    Int?
   bathrooms      Int?
   parkingSpots   Int?
+  ownerName      String?
+  ownerPhone     String?
   isCondo        Boolean         @default(false)
   isFeatured     Boolean         @default(false)
   isLaunch       Boolean         @default(false)
@@ -88,4 +95,11 @@ model PropertyImage {
   alt        String
   sortOrder  Int      @default(0)
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model SiteSettings {
+  id                    String   @id @default("site")
+  brokerPhotoObjectKey  String?
+  brokerPhotoUrl        String?
+  updatedAt             DateTime @updatedAt
 }

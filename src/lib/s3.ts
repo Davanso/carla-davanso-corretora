@@ -18,6 +18,7 @@ import {
   UPLOAD_URL_TTL_SECONDS,
   type PropertyImageContentType,
   type SignedPropertyUpload,
+  type UploadScope,
 } from "@/lib/validations/upload";
 
 const UPLOAD_TOKEN_TTL_SECONDS = 60 * 60;
@@ -117,9 +118,11 @@ export function publicUrlForObjectKey(objectKey: string) {
 
 export async function createPropertyUploadUrl(
   contentType: PropertyImageContentType,
+  scope: UploadScope = "property",
 ): Promise<SignedPropertyUpload> {
   const config = getR2Config();
-  const objectKey = `properties/${crypto.randomUUID()}.${extensionForContentType(contentType)}`;
+  const objectPrefix = scope === "broker" ? "settings/broker" : "properties";
+  const objectKey = `${objectPrefix}/${crypto.randomUUID()}.${extensionForContentType(contentType)}`;
   propertyImageObjectKeySchema.parse(objectKey);
 
   const command = new PutObjectCommand({

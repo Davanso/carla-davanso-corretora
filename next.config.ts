@@ -30,7 +30,7 @@ function r2RemotePattern(): RemotePattern | null {
     protocol: "https",
     hostname: url.hostname,
     port: url.port,
-    pathname: `${basePath}/properties/**`,
+    pathname: `${basePath}/**`,
     search: "",
   };
 }
