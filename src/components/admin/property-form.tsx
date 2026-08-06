@@ -220,6 +220,7 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
         form.reset(createDefaults);
         setImageItems([]);
       }
+      router.push("/admin");
       router.refresh();
     } catch {
       toast.error("Falha de rede ao salvar o imóvel. Tente novamente.");
@@ -346,7 +347,7 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="pb-24" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <FormSectionTitle title="Informações principais" description="Como o imóvel será apresentado no catálogo." />
             <div className="grid gap-5 md:grid-cols-2">
@@ -506,8 +507,8 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
                 <Controller control={control} name="isPublished" render={({ field }) => <BooleanField label="Publicar no site" checked={field.value} onChange={field.onChange} />} />
               </div>
             </div>
-            <div className="sticky bottom-4 z-30 rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur">
-              <Button type="submit" className="h-11 w-full md:w-fit" disabled={isSubmitting || hasPendingUploads || hasFailedUploads}>
+            <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 px-4 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] backdrop-blur sm:px-6 lg:px-8">
+              <Button type="submit" className="ml-auto flex h-11 w-full sm:w-fit" disabled={isSubmitting || hasPendingUploads || hasFailedUploads}>
                 {isSubmitting ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : initialProperty ? <SaveIcon data-icon="inline-start" /> : <PlusIcon data-icon="inline-start" />}
                 {initialProperty ? "Salvar alterações" : "Cadastrar imóvel"}
               </Button>
