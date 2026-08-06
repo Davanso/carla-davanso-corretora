@@ -622,12 +622,11 @@ function CurrencyField({
         control={control}
         name={name}
         render={({ field }) => (
-          <Input
+          <CurrencyInput
             id={name}
-            inputMode="numeric"
-            value={formatCurrencyInput(Number(field.value ?? 0))}
-            aria-invalid={Boolean(error)}
-            onChange={(event) => field.onChange(parseCurrencyInput(event.target.value))}
+            value={Number(field.value ?? 0)}
+            invalid={Boolean(error)}
+            onValueChange={field.onChange}
             onBlur={field.onBlur}
           />
         )}
@@ -635,6 +634,47 @@ function CurrencyField({
       {description ? <FieldDescription>{description}</FieldDescription> : null}
       <FieldError errors={[error]} />
     </Field>
+  );
+}
+
+function CurrencyInput({
+  id,
+  invalid,
+  onBlur,
+  onValueChange,
+  value,
+}: {
+  id: string;
+  invalid: boolean;
+  onBlur: () => void;
+  onValueChange: (value: number) => void;
+  value: number;
+}) {
+  const [editValue, setEditValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const displayValue = isFocused ? editValue : formatCurrencyInput(value);
+
+  return (
+    <Input
+      id={id}
+      inputMode="decimal"
+      value={displayValue}
+      aria-invalid={invalid}
+      placeholder="R$ 0,00"
+      onFocus={() => {
+        setIsFocused(true);
+        setEditValue(value > 0 ? formatCurrencyForEditing(value) : "");
+      }}
+      onChange={(event) => {
+        const nextValue = event.target.value;
+        setEditValue(nextValue);
+        onValueChange(parseCurrencyInput(nextValue));
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+        onBlur();
+      }}
+    />
   );
 }
 
@@ -657,10 +697,26 @@ function formatCurrencyInput(value: number) {
   }).format(value);
 }
 
+function formatCurrencyForEditing(value: number) {
+  if (!Number.isFinite(value) || value <= 0) return "";
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
 function parseCurrencyInput(value: string) {
-  const digits = value.replace(/\D/g, "");
-  if (!digits) return 0;
-  return Number(digits) / 100;
+  const normalized = value.replace(/[^\d,.]/g, "");
+  const separatorIndex = Math.max(normalized.lastIndexOf(","), normalized.lastIndexOf("."));
+
+  if (separatorIndex >= 0) {
+    const integerPart = normalized.slice(0, separatorIndex).replace(/\D/g, "") || "0";
+    const decimalPart = normalized.slice(separatorIndex + 1).replace(/\D/g, "").slice(0, 2).padEnd(2, "0");
+    return Number(`${integerPart}.${decimalPart}`);
+  }
+
+  const digits = normalized.replace(/\D/g, "");
+  return digits ? Number(digits) : 0;
 }
 
 function SelectField({ control, name, label, options }: { control: ReturnType<typeof useForm<AdminPropertyFormValues>>["control"]; name: "purpose" | "type"; label: string; options: Array<{ value: string; label: string }> }) {
