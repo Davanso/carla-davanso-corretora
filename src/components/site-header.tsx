@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MenuIcon, MessageCircleIcon, XIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -16,11 +17,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur">
       <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-5 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex flex-col leading-none">
-          <span className="text-xl font-semibold tracking-tight">Carla Davanso</span>
-          <span className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-            Corretora de imóveis
-          </span>
+        <Link href="/" className="relative block h-14 w-48 shrink-0 sm:w-56" aria-label="Carla Davanso Consultora de Imóveis">
+          <Image
+            src="/brand/logo-horizontal-carvalho.png"
+            alt="Carla Davanso Consultora de Imóveis"
+            fill
+            priority
+            className="object-contain object-left"
+            sizes="224px"
+          />
         </Link>
         <nav aria-label="Navegação principal" className="hidden items-center gap-6 text-sm font-medium lg:flex">
           {publicNavigation.slice(0, 4).map((item) => (

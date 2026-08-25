@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -6,7 +7,15 @@ export function SiteFooter() {
     <footer id="contato" className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-8">
         <div>
-          <p className="text-2xl font-semibold">Carla Davanso</p>
+          <div className="relative h-24 w-64 max-w-full">
+            <Image
+              src="/brand/logo-horizontal-marfim.png"
+              alt="Carla Davanso Consultora de Imóveis"
+              fill
+              className="object-contain object-left"
+              sizes="256px"
+            />
+          </div>
           <p className="mt-3 max-w-md text-sm leading-6 text-primary-foreground/75">
             Atendimento consultivo para comprar, vender ou alugar com clareza,
             cuidado e segurança em cada etapa.

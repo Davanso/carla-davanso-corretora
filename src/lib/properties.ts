@@ -58,7 +58,7 @@ function mapProperty(property: PropertyWithRelations): Property {
 }
 
 function canUseDevelopmentSamples() {
-  return process.env.NODE_ENV === "development" && !process.env.DATABASE_URL;
+  return process.env.NODE_ENV === "development";
 }
 
 export class CatalogueUnavailableError extends Error {
@@ -83,6 +83,7 @@ export async function getProperties(): Promise<Property[]> {
 
     return properties.map(mapProperty);
   } catch (error) {
+    if (canUseDevelopmentSamples()) return sampleProperties;
     throw new CatalogueUnavailableError(error);
   }
 }
@@ -104,6 +105,9 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
 
     return property ? mapProperty(property) : null;
   } catch (error) {
+    if (canUseDevelopmentSamples()) {
+      return sampleProperties.find((property) => property.slug === normalizedSlug) ?? null;
+    }
     throw new CatalogueUnavailableError(error);
   }
 }

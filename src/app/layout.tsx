@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Poppins } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { FloatingWhatsapp } from "@/components/floating-whatsapp";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -9,10 +10,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const antonia = localFont({
+  src: "./fonts/antonia-variable.otf",
+  variable: "--font-antonia",
+  display: "swap",
+});
+
+const ivyEpic = localFont({
+  src: "./fonts/ivyepic-variable.woff2",
+  variable: "--font-ivy-epic",
   display: "swap",
 });
 
@@ -29,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${poppins.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${antonia.variable} ${ivyEpic.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

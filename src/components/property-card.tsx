@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { BathIcon, BedDoubleIcon, CarIcon, MapPinIcon, RulerIcon, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { WatermarkedPropertyImage } from "@/components/watermarked-property-image";
 import { formatCurrency, purposeLabel } from "@/lib/format";
 import type { Property } from "@/types/property";
 
@@ -19,10 +19,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
       <Link href={`/imovel/${property.slug}`} aria-label={`Ver ${property.title}`}>
         <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-muted">
           {image ? (
-            <Image
+            <WatermarkedPropertyImage
               src={image.url}
               alt={image.alt}
-              fill
               className="object-cover transition duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 90vw, 33vw"
             />

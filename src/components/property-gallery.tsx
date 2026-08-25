@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { WatermarkedPropertyImage } from "@/components/watermarked-property-image";
 import type { PropertyImage } from "@/types/property";
 
 export function PropertyGallery({ images, title }: { images: PropertyImage[]; title: string }) {
@@ -19,10 +20,9 @@ export function PropertyGallery({ images, title }: { images: PropertyImage[]; ti
   return (
     <div className="flex flex-col gap-3">
       <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-muted">
-        <Image
+        <WatermarkedPropertyImage
           src={selected.url}
           alt={selected.alt || `${title} - foto ${selectedIndex + 1}`}
-          fill
           priority
           className="object-cover"
           sizes="(max-width: 1024px) 100vw, 66vw"
