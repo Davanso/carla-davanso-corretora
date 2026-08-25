@@ -62,30 +62,30 @@ function Hero() {
       <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/75 to-transparent" />
       <div className="relative mx-auto flex min-h-[620px] max-w-7xl flex-col justify-end px-4 pb-24 pt-28 sm:min-h-[680px] sm:px-6 sm:pb-28 lg:px-8">
         <div className="max-w-4xl">
-            <h1 className="max-w-4xl text-5xl font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
-              Casas e apartamentos em Indaiatuba e região.
-            </h1>
-            <p className="mt-7 max-w-xl text-base leading-7 text-primary-foreground/80 sm:text-lg sm:leading-8">
-              Imóveis para comprar ou alugar, com informações claras e atendimento direto em cada etapa.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a className={buttonVariants({ size: "lg", variant: "secondary" })} href="#busca">
-                Ver imóveis
-                <ArrowRightIcon data-icon="inline-end" />
-              </a>
-              <a
-                className={cn(
-                  buttonVariants({ size: "lg", variant: "outline" }),
-                  "border-white/35 bg-transparent text-white hover:bg-white/15 hover:text-white"
-                )}
-                href={whatsappHref}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <MessageCircleIcon data-icon="inline-start" />
-                Converse comigo
-              </a>
-            </div>
+          <h1 className="max-w-4xl text-5xl font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
+            Imóveis em Indaiatuba e região.
+          </h1>
+          <p className="mt-7 max-w-xl text-base leading-7 text-primary-foreground/80 sm:text-lg sm:leading-8">
+            Imóveis para comprar ou alugar, com informações claras e atendimento direto em cada etapa.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a className={buttonVariants({ size: "lg", variant: "secondary" })} href="#busca">
+              Ver imóveis
+              <ArrowRightIcon data-icon="inline-end" />
+            </a>
+            <a
+              className={cn(
+                buttonVariants({ size: "lg", variant: "outline" }),
+                "border-white/35 bg-transparent text-white hover:bg-white/15 hover:text-white"
+              )}
+              href={whatsappHref}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <MessageCircleIcon data-icon="inline-start" />
+              Converse comigo
+            </a>
+          </div>
         </div>
       </div>
     </section>
