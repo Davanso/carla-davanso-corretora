@@ -36,6 +36,10 @@ export type Property = {
   parkingSpots?: number | null;
   ownerName?: string | null;
   ownerPhone?: string | null;
+  street?: string | null;
+  addressNumber?: string | null;
+  addressComplement?: string | null;
+  zipCode?: string | null;
   isCondo: boolean;
   isFeatured: boolean;
   isLaunch: boolean;

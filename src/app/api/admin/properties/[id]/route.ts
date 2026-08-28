@@ -129,6 +129,10 @@ export async function PATCH(request: Request, context: Context) {
     parkingSpots: values.parkingSpots ?? existing.parkingSpots ?? 0,
     ownerName: values.ownerName ?? existing.ownerName ?? "",
     ownerPhone: values.ownerPhone ?? existing.ownerPhone ?? "",
+    street: values.street ?? existing.street ?? "",
+    addressNumber: values.addressNumber ?? existing.addressNumber ?? "",
+    addressComplement: values.addressComplement ?? existing.addressComplement ?? "",
+    zipCode: values.zipCode ?? existing.zipCode ?? "",
     city: values.city ?? existing.city.name,
     district: values.district ?? existing.district?.name ?? "Centro",
     community: values.community ?? existing.community?.name ?? "",
@@ -203,6 +207,10 @@ export async function PATCH(request: Request, context: Context) {
           parkingSpots: merged.parkingSpots,
           ownerName: merged.ownerName || null,
           ownerPhone: merged.ownerPhone || null,
+          street: merged.street || null,
+          addressNumber: merged.addressNumber || null,
+          addressComplement: merged.addressComplement || null,
+          zipCode: merged.zipCode || null,
           cityId: city.id,
           districtId: district.id,
           communityId: community?.id ?? null,
@@ -210,7 +218,7 @@ export async function PATCH(request: Request, context: Context) {
           isFeatured: merged.isFeatured,
           isLaunch: merged.isLaunch,
           isPublished: merged.isPublished,
-          addressSummary: `${merged.district}, ${merged.city}-SP`,
+          addressSummary: buildAddressSummary(merged),
         },
         include: propertyInclude,
       });
@@ -293,4 +301,9 @@ async function readPropertyId(context: Context) {
 
 function invalidId() {
   return NextResponse.json({ message: "Identificador de imóvel inválido." }, { status: 400 });
+}
+
+function buildAddressSummary(values: { street: string; addressNumber: string; district: string; city: string }) {
+  const streetLine = [values.street, values.addressNumber].filter(Boolean).join(", ");
+  return [streetLine, values.district, `${values.city}-SP`].filter(Boolean).join(" - ");
 }

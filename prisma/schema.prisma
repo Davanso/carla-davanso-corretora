@@ -51,40 +51,44 @@ model Community {
 }
 
 model Property {
-  id             String          @id @default(cuid())
-  code           String          @unique
-  title          String
-  slug           String          @unique
-  description    String
-  purpose        PropertyPurpose
-  type           PropertyType
-  priceInCents   Int
-  condoFeeCents  Int?
-  iptuFeeCents   Int?
-  areaM2         Int
-  landAreaM2     Int?
-  builtAreaM2    Int?
-  bedrooms       Int?
-  suites         Int?
-  livingRooms    Int?
-  bathrooms      Int?
-  parkingSpots   Int?
-  ownerName      String?
-  ownerPhone     String?
-  isCondo        Boolean         @default(false)
-  isFeatured     Boolean         @default(false)
-  isLaunch       Boolean         @default(false)
-  isPublished    Boolean         @default(true)
-  addressSummary String
-  cityId         String
-  districtId     String?
-  communityId    String?
-  city           City            @relation(fields: [cityId], references: [id])
-  district       District?       @relation(fields: [districtId], references: [id])
-  community      Community?      @relation(fields: [communityId], references: [id])
-  images         PropertyImage[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id                String          @id @default(cuid())
+  code              String          @unique
+  title             String
+  slug              String          @unique
+  description       String
+  purpose           PropertyPurpose
+  type              PropertyType
+  priceInCents      Int
+  condoFeeCents     Int?
+  iptuFeeCents      Int?
+  areaM2            Int
+  landAreaM2        Int?
+  builtAreaM2       Int?
+  bedrooms          Int?
+  suites            Int?
+  livingRooms       Int?
+  bathrooms         Int?
+  parkingSpots      Int?
+  ownerName         String?
+  ownerPhone        String?
+  street            String?
+  addressNumber     String?
+  addressComplement String?
+  zipCode           String?
+  isCondo           Boolean         @default(false)
+  isFeatured        Boolean         @default(false)
+  isLaunch          Boolean         @default(false)
+  isPublished       Boolean         @default(true)
+  addressSummary    String
+  cityId            String
+  districtId        String?
+  communityId       String?
+  city              City            @relation(fields: [cityId], references: [id])
+  district          District?       @relation(fields: [districtId], references: [id])
+  community         Community?      @relation(fields: [communityId], references: [id])
+  images            PropertyImage[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
 
 model PropertyImage {
@@ -98,8 +102,8 @@ model PropertyImage {
 }
 
 model SiteSettings {
-  id                    String   @id @default("site")
-  brokerPhotoObjectKey  String?
-  brokerPhotoUrl        String?
-  updatedAt             DateTime @updatedAt
+  id                   String   @id @default("site")
+  brokerPhotoObjectKey String?
+  brokerPhotoUrl       String?
+  updatedAt            DateTime @updatedAt
 }

@@ -79,6 +79,10 @@ export type EditableAdminProperty = {
   parkingSpots: number | null;
   ownerName: string | null;
   ownerPhone: string | null;
+  street: string | null;
+  addressNumber: string | null;
+  addressComplement: string | null;
+  zipCode: string | null;
   isCondo: boolean;
   isFeatured: boolean;
   isLaunch: boolean;
@@ -132,6 +136,10 @@ const createDefaults: AdminPropertyFormValues = {
   city: "Indaiatuba",
   district: "",
   community: "",
+  street: "",
+  addressNumber: "",
+  addressComplement: "",
+  zipCode: "",
   isCondo: false,
   isFeatured: false,
   isLaunch: false,
@@ -385,9 +393,18 @@ export function AdminPropertyForm({ initialProperty }: { initialProperty?: Edita
               <NumberField id="bathrooms" label="Banheiros" register={register("bathrooms", { valueAsNumber: true })} error={errors.bathrooms} />
               <NumberField id="parkingSpots" label="Vagas" register={register("parkingSpots", { valueAsNumber: true })} error={errors.parkingSpots} />
             </div>
+            <FormSectionTitle title="Localização" description="Endereço e região do imóvel." />
             <div className="grid gap-5 md:grid-cols-3">
               <TextField id="city" label="Cidade" register={register("city")} error={errors.city} />
               <TextField id="district" label="Bairro" register={register("district")} error={errors.district} />
+              <TextField id="zipCode" label="CEP" register={register("zipCode")} error={errors.zipCode} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-[1fr_9rem_1fr]">
+              <TextField id="street" label="Endereço" register={register("street")} error={errors.street} />
+              <TextField id="addressNumber" label="Número" register={register("addressNumber")} error={errors.addressNumber} />
+              <TextField id="addressComplement" label="Complemento" register={register("addressComplement")} error={errors.addressComplement} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
               <TextField id="community" label="Nome do condomínio / empreendimento (opcional)" register={register("community")} error={errors.community} />
             </div>
             <FormSectionTitle title="Fotos" description="Ajude o cliente a encontrar o imóvel; a primeira foto será a capa." />
@@ -541,6 +558,10 @@ function propertyToFormValues(property: EditableAdminProperty): AdminPropertyFor
     city: property.city.name,
     district: property.district?.name ?? "",
     community: property.community?.name ?? "",
+    street: property.street ?? "",
+    addressNumber: property.addressNumber ?? "",
+    addressComplement: property.addressComplement ?? "",
+    zipCode: property.zipCode ?? "",
     isCondo: property.isCondo,
     isFeatured: property.isFeatured,
     isLaunch: property.isLaunch,

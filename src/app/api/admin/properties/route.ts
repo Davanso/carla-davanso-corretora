@@ -112,6 +112,10 @@ async function createProperty(
         parkingSpots: values.parkingSpots,
         ownerName: values.ownerName || null,
         ownerPhone: values.ownerPhone || null,
+        street: values.street || null,
+        addressNumber: values.addressNumber || null,
+        addressComplement: values.addressComplement || null,
+        zipCode: values.zipCode || null,
         cityId: city.id,
         districtId: district.id,
         communityId: community?.id,
@@ -119,7 +123,7 @@ async function createProperty(
         isFeatured: values.isFeatured,
         isLaunch: values.isLaunch,
         isPublished: values.isPublished,
-        addressSummary: `${values.district}, ${values.city}-SP`,
+        addressSummary: buildAddressSummary(values),
         images: {
           create: uploads.map((image, index) => ({
             ...image,
@@ -162,6 +166,11 @@ export function isUploadVerificationError(error: unknown) {
 
 function legacyAreaM2(values: Pick<PropertyCreateValues, "landAreaM2" | "builtAreaM2">) {
   return values.landAreaM2 || values.builtAreaM2 || 1;
+}
+
+function buildAddressSummary(values: Pick<PropertyCreateValues, "street" | "addressNumber" | "district" | "city">) {
+  const streetLine = [values.street, values.addressNumber].filter(Boolean).join(", ");
+  return [streetLine, values.district, `${values.city}-SP`].filter(Boolean).join(" - ");
 }
 
 export { propertyInclude };
